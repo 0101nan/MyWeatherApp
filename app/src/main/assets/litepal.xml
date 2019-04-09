@@ -1,0 +1,11 @@
+<litepal>
+
+    <dbname value="AreaList"/>
+
+    <version value="1"/>
+
+    <list>
+        <mapping class="com.liyinan.myweather.db.Area"/>
+    </list>
+
+</litepal>

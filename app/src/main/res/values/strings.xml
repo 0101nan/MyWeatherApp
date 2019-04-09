@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">天气</string>
+    <string name="search_area_hint">输入城市中文名称或拼音</string>
+    <string name="new_area">添加城市</string>
+    <string name="data_resource">数据来源：和风天气</string>
+    <string name="toolbar_default_text">无数据</string>
+</resources>

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.liyinan.myweather.db.Area;
+import com.liyinan.myweather.util.ActivityCollector;
 
 import org.litepal.LitePal;
 
@@ -41,6 +42,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_pager);
+        ActivityCollector.addActivity(this);
 
         //绑定控件
         mViewPager=findViewById(R.id.weather_view_pager);
@@ -134,8 +136,13 @@ public class WeatherPagerActivity extends AppCompatActivity {
             sb.show();
             firstTime = secondTime;
         } else {
-            finish();
+            ActivityCollector.finishAll();
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
 }

@@ -9,12 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.liyinan.myweather.util.ActivityCollector;
+
 public class AreaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_area);
+        ActivityCollector.addActivity(this);
 
         Toolbar toolbar=findViewById(R.id.area_activity_toolbar);
         setSupportActionBar(toolbar);
@@ -49,5 +52,11 @@ public class AreaActivity extends AppCompatActivity {
                 default:
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

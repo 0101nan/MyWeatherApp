@@ -3,6 +3,7 @@ package com.liyinan.myweather;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.liyinan.myweather.db.Area;
 
 import org.litepal.LitePal;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.WeakHashMap;
 
@@ -30,6 +32,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
             areaView=view;
             areaNameTextView=view.findViewById(R.id.area_name);
         }
+
     }
 
     public AreaAdapter(List<Area> areaList){
@@ -41,7 +44,6 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.area_list_item,parent,false);
         ViewHolder holder=new ViewHolder(view);
-        int position=holder.getAdapterPosition();
         holder.areaView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,4 +82,19 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     public int getItemCount() {
         return mAreaList.size();
     }
+
+    //删除数据
+    public final void delData(int position){
+        mAreaList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    //交换数据
+    public final void move(int fromPosition,int toPosition){
+        Collections.swap(mAreaList,fromPosition,toPosition);
+        notifyItemMoved(fromPosition,toPosition);
+    }
+
+
+
 }

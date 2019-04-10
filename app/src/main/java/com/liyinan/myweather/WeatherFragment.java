@@ -9,9 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -53,6 +55,8 @@ public class WeatherFragment extends Fragment {
     private String mWeatherId;
     private LineChart lineChart;
 
+    private CardView mWeatherNowCard;
+
     private TextView nowCondText;
     private TextView nowTmp;
     private TextView nowTime;
@@ -85,12 +89,13 @@ public class WeatherFragment extends Fragment {
         forecastLayout=view.findViewById(R.id.weather_forecast_layout);
         nowPm25=view.findViewById(R.id.now_pm25);
         nowQlty=view.findViewById(R.id.now_qlty_txt);
+        mWeatherNowCard=view.findViewById(R.id.weather_now_card);
 
         //设置标题栏
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar=((AppCompatActivity)getActivity()).getSupportActionBar();
         if(actionBar!=null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(false);
         }
         collapsingToolbarLayout.setTitle("无数据");
 
@@ -123,6 +128,15 @@ public class WeatherFragment extends Fragment {
             public void onRefresh() {
                 requestWeather(mWeatherId);
                 requestAQI(mWeatherId);
+            }
+        });
+
+        mWeatherNowCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager=getFragmentManager();
+                WeatherNowDialogFragment weatherNowDialogFragment=new WeatherNowDialogFragment();
+                weatherNowDialogFragment.show(fragmentManager,null);
             }
         });
         return view;

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,31 @@ public class AreaListFragment extends Fragment {
         mAreaList=LitePal.findAll(Area.class);
         mAreaAdapter=new AreaAdapter(mAreaList);
         mRecyclerView.setAdapter(mAreaAdapter);
+
+        //设置横划和拖动
+        final ItemTouchHelper itemTouchHelper=new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int dragFlags=ItemTouchHelper.UP|ItemTouchHelper.DOWN|ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT;
+                int swipeFlags=ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT;
+                return makeMovementFlags(dragFlags,swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                mAreaAdapter.move(viewHolder.getAdapterPosition(),target.getAdapterPosition());
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                mAreaAdapter.delData(viewHolder.getAdapterPosition());
+            }
+
+        });
+        //关联recyclerview
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
         return view;
     }
 

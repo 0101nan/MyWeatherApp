@@ -1,7 +1,9 @@
 package com.liyinan.myweather;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.liyinan.myweather.db.Area;
+import com.liyinan.myweather.gson.Area1;
+import com.liyinan.myweather.util.Utility;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
@@ -25,7 +33,8 @@ import static android.support.constraint.Constraints.TAG;
 public class AreaListFragment extends Fragment {
     private AreaAdapter mAreaAdapter;
     private RecyclerView mRecyclerView;
-    private List<Area> mAreaList=new ArrayList<>();
+
+    private List<Area1> mArea1List=new ArrayList<>();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +46,14 @@ public class AreaListFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_list_area,container,false);
         mRecyclerView=view.findViewById(R.id.area_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAreaList=LitePal.findAll(Area.class);
-        mAreaAdapter=new AreaAdapter(mAreaList);
+        //读取城市列表
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        String jsonAreaList=prefs.getString("areaList",null);
+        if(jsonAreaList!=null){
+            mArea1List= Utility.handleAreaList(jsonAreaList);
+        }
+        //绑定adapter
+        mAreaAdapter=new AreaAdapter(mArea1List);
         mRecyclerView.setAdapter(mAreaAdapter);
 
         //设置横划和拖动

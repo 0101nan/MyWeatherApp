@@ -46,6 +46,7 @@ public class AreaActivity extends AppCompatActivity {
                 FragmentManager fragmentManager=getSupportFragmentManager();
                 Fragment fragment=new AreaAddFragment();
                 fragmentManager.beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.area_fragment_container,fragment)
                         .commit();
                 break;
@@ -59,4 +60,5 @@ public class AreaActivity extends AppCompatActivity {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
     }
+
 }

@@ -3,7 +3,10 @@ package com.liyinan.myweather;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,10 +24,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.liyinan.myweather.db.Area;
+import com.liyinan.myweather.gson.Area1;
 import com.liyinan.myweather.util.ActivityCollector;
+import com.liyinan.myweather.util.Utility;
 
 import org.litepal.LitePal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator;
@@ -33,7 +39,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
     private static final String EXTRA_AREA_ID="com.liyinan.myweather.area_id";
 
     private ViewPager mViewPager;
-    private List<Area> mAreas;
+    private List<Area1> mAreas=new ArrayList<>();
     private CoordinatorLayout mCoordinatorLayout;
     private FloatingActionButton floatingActionButton;
 
@@ -41,6 +47,12 @@ public class WeatherPagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //融合状态栏
+        View decorview=getWindow().getDecorView();
+        decorview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+
         setContentView(R.layout.activity_weather_pager);
         ActivityCollector.addActivity(this);
 
@@ -59,29 +71,33 @@ public class WeatherPagerActivity extends AppCompatActivity {
             }
         });
 
-        //查询城市数据库,如果还没添加先暂时添加一个默认地址
-        mAreas= LitePal.findAll(Area.class);
-        if(mAreas.size()==0){
-            Area area=new Area();
-            area.setAreaName("无锡");
-            area.setAreaCode("CN101190201");
-            area.save();
-            mAreas= LitePal.findAll(Area.class);
-        }
+        //查询城市数据库，若为空则启动添加
         String areaId=getIntent().getStringExtra(EXTRA_AREA_ID);
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
+        String jsonAreaList=prefs.getString("areaList",null);
+        if(jsonAreaList!=null){
+            mAreas= Utility.handleAreaList(jsonAreaList);
+        }else{
+            Intent intent=new Intent(this,AreaActivity.class);
+            startActivity(intent);
+        }
 
         //设置adapter
         FragmentManager fragmentManager=getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int i) {
-                Area area=mAreas.get(i);
+                Area1 area=mAreas.get(i);
                 return WeatherFragment.newInstance(area.getAreaCode());
             }
-
             @Override
             public int getCount() {
                 return mAreas.size();
+            }
+
+            @Override
+            public int getItemPosition(@NonNull Object object) {
+                return POSITION_NONE;
             }
         });
         for (int i=0;i<mAreas.size();i++){
@@ -91,7 +107,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
             }
         }
 
-        //解决偶尔会便宜到状态栏中的问题
+        //解决偶尔会偏移到状态栏中的问题
         ViewCompat.setOnApplyWindowInsetsListener(mViewPager,
                 new OnApplyWindowInsetsListener() {
                     @Override
@@ -144,5 +160,14 @@ public class WeatherPagerActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
+        String jsonAreaList=prefs.getString("areaList",null);
+        mAreas=Utility.handleAreaList(jsonAreaList);
+        mViewPager.getAdapter().notifyDataSetChanged();
     }
 }

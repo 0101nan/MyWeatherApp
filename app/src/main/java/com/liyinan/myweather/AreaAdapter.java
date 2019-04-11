@@ -1,6 +1,8 @@
 package com.liyinan.myweather;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatTextView;
@@ -12,7 +14,9 @@ import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.liyinan.myweather.db.Area;
+import com.liyinan.myweather.gson.Area1;
 
 import org.litepal.LitePal;
 
@@ -21,8 +25,9 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
-    private List<Area>  mAreaList;
-    private Area mArea;
+    private List<Area1>  mAreaList;
+    private Area1 mArea;
+    private SharedPreferences.Editor editor;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView areaNameTextView;
@@ -35,7 +40,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
 
     }
 
-    public AreaAdapter(List<Area> areaList){
+    public AreaAdapter(List<Area1> areaList){
         mAreaList=areaList;
     }
 
@@ -44,29 +49,13 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.area_list_item,parent,false);
         ViewHolder holder=new ViewHolder(view);
+        editor=PreferenceManager.getDefaultSharedPreferences(view.getContext()).edit();
         holder.areaView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position=holder.getAdapterPosition();
                 Intent intent=WeatherPagerActivity.newIntent(v.getContext(),mAreaList.get(position).getAreaCode());
                 v.getContext().startActivity(intent);
-            }
-        });
-        holder.areaView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Snackbar.make(v,"是否删除该城市？",Snackbar.LENGTH_SHORT)
-                        .setAction("确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                int position=holder.getAdapterPosition();
-                                LitePal.deleteAll(Area.class,"mAreaCode=?",mAreaList.get(position).getAreaCode());
-                                Toast.makeText(v.getContext(), "已删除:"+mAreaList.get(position).getAreaName(), Toast.LENGTH_SHORT).show();
-                                mAreaList=LitePal.findAll(Area.class);
-                                AreaAdapter.this.notifyDataSetChanged();
-                            }
-                        }).show();
-                return true;
             }
         });
         return holder;
@@ -86,12 +75,18 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     //删除数据
     public final void delData(int position){
         mAreaList.remove(position);
+        Gson gson=new Gson();
+        editor.putString("areaList",gson.toJson(mAreaList));
+        editor.apply();
         notifyItemRemoved(position);
     }
 
     //交换数据
     public final void move(int fromPosition,int toPosition){
         Collections.swap(mAreaList,fromPosition,toPosition);
+        Gson gson=new Gson();
+        editor.putString("areaList",gson.toJson(mAreaList));
+        editor.apply();
         notifyItemMoved(fromPosition,toPosition);
     }
 

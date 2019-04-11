@@ -46,9 +46,7 @@ import static java.lang.Integer.parseInt;
 public class WeatherFragment extends Fragment {
     private static final String ARG_AREA_ID="area_id";
 
-    private CollapsingToolbarLayout collapsingToolbarLayout;
     private LinearLayout forecastLayout;
-    private Toolbar toolbar;
     private ImageView titleImageView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -62,6 +60,7 @@ public class WeatherFragment extends Fragment {
     private TextView nowTime;
     private TextView nowQlty;
     private TextView nowPm25;
+    private TextView nowCityName;
 
     //由启动处创建附带地址的fragment
     public static WeatherFragment newInstance(String areaId){
@@ -78,8 +77,6 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_weather,container,false);
         //控件绑定
-        collapsingToolbarLayout=view.findViewById(R.id.weather_collapsing_toolbar);
-        toolbar=view.findViewById(R.id.weather_toolbar);
         titleImageView=view.findViewById(R.id.weather_title_img);
         mSwipeRefreshLayout=view.findViewById(R.id.weather_swipe_refresh);
         nowCondText=view.findViewById(R.id.now_cond_txt);
@@ -89,18 +86,10 @@ public class WeatherFragment extends Fragment {
         forecastLayout=view.findViewById(R.id.weather_forecast_layout);
         nowPm25=view.findViewById(R.id.now_pm25);
         nowQlty=view.findViewById(R.id.now_qlty_txt);
-        mWeatherNowCard=view.findViewById(R.id.weather_now_card);
-
-        //设置标题栏
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ActionBar actionBar=((AppCompatActivity)getActivity()).getSupportActionBar();
-        if(actionBar!=null){
-            actionBar.setDisplayHomeAsUpEnabled(false);
-        }
-        collapsingToolbarLayout.setTitle("无数据");
+        nowCityName=view.findViewById(R.id.city_name);
 
         //设置头图
-        Glide.with(this).load(R.drawable.titleimg).into(titleImageView);
+        Glide.with(this).load(R.drawable.title_img1).into(titleImageView);
 
         //查询天气
         mWeatherId=getArguments().getString(ARG_AREA_ID);
@@ -130,7 +119,7 @@ public class WeatherFragment extends Fragment {
                 requestAQI(mWeatherId);
             }
         });
-
+        /*
         mWeatherNowCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +128,7 @@ public class WeatherFragment extends Fragment {
                 weatherNowDialogFragment.show(fragmentManager,null);
             }
         });
+        */
         return view;
     }
 
@@ -190,13 +180,12 @@ public class WeatherFragment extends Fragment {
         String temperature=weather.now.tmp;
         String cond=weather.now.cond_txt;
 
-        //显示标题
-        collapsingToolbarLayout.setTitle(cityName);
-
+        nowCityName.setText(weather.basic.location);
+        nowTime.setText(weather.update.loc.split(" ")[1]);
         //显示当日天气
         nowTmp.setText(temperature+"℃");
         nowCondText.setText(cond);
-        nowTime.setText(updateTime);
+       // nowTime.setText(updateTime);
 
         //显示逐日天气
         forecastLayout.removeAllViews();
@@ -250,6 +239,8 @@ public class WeatherFragment extends Fragment {
                             editor.putString("area_aqi"+mWeatherId,responseText);
                             editor.apply();
                             showAQIInfo(aqi);
+                        }else{
+                            Toast.makeText(getContext(), "获取空气信息失败 ", Toast.LENGTH_SHORT).show();
                         }
                         mSwipeRefreshLayout.setRefreshing(false);
                     }

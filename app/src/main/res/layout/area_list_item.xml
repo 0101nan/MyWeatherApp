@@ -14,18 +14,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
+            android:id="@+id/area_item_title_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/title_img1"/>
+            android:scaleType="centerCrop"/>
         <TextView
             android:id="@+id/area_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="20sp"
+            android:layout_margin="15dp"
+            android:textSize="25sp"
             android:textColor="#fff"
-            android:layout_alignParentLeft="true"/>
+            android:shadowColor="#ff000000"
+            android:shadowRadius="10"
+            android:shadowDx="5"
+            android:shadowDy="5"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 
 

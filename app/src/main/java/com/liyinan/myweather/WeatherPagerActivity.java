@@ -42,6 +42,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
     private List<Area1> mAreas=new ArrayList<>();
     private CoordinatorLayout mCoordinatorLayout;
     private FloatingActionButton floatingActionButton;
+    private CircleIndicator mIndicator;
 
 
     @Override
@@ -58,7 +59,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
 
         //绑定控件
         mViewPager=findViewById(R.id.weather_view_pager);
-        CircleIndicator indicator =findViewById(R.id.indicator);
+        mIndicator=findViewById(R.id.indicator);
         mCoordinatorLayout=findViewById(R.id.weather_coordinator_layout);
         floatingActionButton=findViewById(R.id.floating_button);
 
@@ -71,7 +72,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
             }
         });
 
-        //查询城市数据库，若为空则启动添加
+        //查询城市数据库，若为空则启动添加页面
         String areaId=getIntent().getStringExtra(EXTRA_AREA_ID);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         String jsonAreaList=prefs.getString("areaList",null);
@@ -129,7 +130,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
                     }
                 });
 
-        indicator.setViewPager(mViewPager);
+        mIndicator.setViewPager(mViewPager);
     }
 
     public static Intent newIntent(Context packageContext, String areaId){
@@ -165,9 +166,11 @@ public class WeatherPagerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //刷新viewpager
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
         String jsonAreaList=prefs.getString("areaList",null);
         mAreas=Utility.handleAreaList(jsonAreaList);
         mViewPager.getAdapter().notifyDataSetChanged();
+        mIndicator.setViewPager(mViewPager);
     }
 }

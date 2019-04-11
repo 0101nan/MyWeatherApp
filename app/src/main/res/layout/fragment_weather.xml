@@ -30,7 +30,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="154dp"
                         android:textColor="#fff"
-                        android:textSize="60sp" />
+                        android:textSize="70sp" />
                     <TextView
                         android:id="@+id/now_cond_txt"
                         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                         android:layout_below="@+id/now_tmp"
                         android:layout_centerHorizontal="true"
                         android:textColor="#fff"
-                        android:textSize="16sp" />
+                        android:textSize="25sp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -56,8 +56,8 @@
                         android:orientation="vertical"
                         android:layout_marginTop="55dp">
                         <include layout="@layout/weather_title"/>
-                        <include layout="@layout/weather_perday"/>
                         <include layout="@layout/weather_now_aqi"/>
+                        <include layout="@layout/weather_perday"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"

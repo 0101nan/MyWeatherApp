@@ -18,8 +18,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="30dp"/>
     <ImageView
-        android:layout_width="20sp"
-        android:layout_height="20sp"
+        android:layout_width="18sp"
+        android:layout_height="18sp"
         android:layout_toLeftOf="@+id/now_date"
         android:src="@drawable/ic_time"
         android:layout_alignParentBottom="true"/>

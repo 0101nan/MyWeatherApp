@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.liyinan.myweather.db.Area;
 import com.liyinan.myweather.gson.Area1;
@@ -32,10 +34,12 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView areaNameTextView;
         View areaView;
+        ImageView titleImg;
         public ViewHolder(View view){
             super(view);
             areaView=view;
             areaNameTextView=view.findViewById(R.id.area_name);
+            titleImg=view.findViewById(R.id.area_item_title_img);
         }
 
     }
@@ -65,6 +69,16 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         mArea=mAreaList.get(i);
         holder.areaNameTextView.setText(mArea.getAreaName());
+
+        //从内存读取对应图片地址并显示，若为空则显示默认
+        SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(holder.areaView.getContext());
+        int resID=preferences.getInt("area_titleImg"+mArea.getAreaCode(),0);
+        if(resID==0) {
+            Glide.with(holder.areaView.getContext()).load(R.drawable.title_img_1_0).into(holder.titleImg);
+        }else{
+            Glide.with(holder.areaView.getContext()).load(resID).into(holder.titleImg);
+        }
+
     }
 
     @Override

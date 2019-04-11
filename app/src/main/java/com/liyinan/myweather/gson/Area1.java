@@ -3,6 +3,15 @@ package com.liyinan.myweather.gson;
 public class Area1 {
     private String mAreaName;
     private String mAreaCode;
+    private String titleImg;
+
+    public String getTitleImg() {
+        return titleImg;
+    }
+
+    public void setTitleImg(String titleImg) {
+        this.titleImg = titleImg;
+    }
 
     public String getAreaName() {
         return mAreaName;

@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,10 @@ import com.liyinan.myweather.util.LineChartUtil;
 import com.liyinan.myweather.util.Utility;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -45,6 +49,7 @@ import static java.lang.Integer.parseInt;
 
 public class WeatherFragment extends Fragment {
     private static final String ARG_AREA_ID="area_id";
+    private static final String TAG = "WeatherFragment";
 
     private LinearLayout forecastLayout;
     private ImageView titleImageView;
@@ -88,9 +93,6 @@ public class WeatherFragment extends Fragment {
         nowQlty=view.findViewById(R.id.now_qlty_txt);
         nowCityName=view.findViewById(R.id.city_name);
 
-        //设置头图
-        Glide.with(this).load(R.drawable.title_img1).into(titleImageView);
-
         //查询天气
         mWeatherId=getArguments().getString(ARG_AREA_ID);
         SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -119,16 +121,6 @@ public class WeatherFragment extends Fragment {
                 requestAQI(mWeatherId);
             }
         });
-        /*
-        mWeatherNowCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager=getFragmentManager();
-                WeatherNowDialogFragment weatherNowDialogFragment=new WeatherNowDialogFragment();
-                weatherNowDialogFragment.show(fragmentManager,null);
-            }
-        });
-        */
         return view;
     }
 
@@ -180,6 +172,14 @@ public class WeatherFragment extends Fragment {
         String temperature=weather.now.tmp;
         String cond=weather.now.cond_txt;
 
+        //设置头图并保存图片地址
+        String titleImg=Utility.getTitleImg(weather);
+        int resId = getContext().getResources().getIdentifier(titleImg, "drawable", getContext().getPackageName());
+        Glide.with(this).load(resId).into(titleImageView);
+        SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+        editor.putInt("area_titleImg"+weather.basic.cid,resId);
+        editor.apply();
+
         nowCityName.setText(weather.basic.location);
         nowTime.setText(weather.update.loc.split(" ")[1]);
         //显示当日天气
@@ -210,6 +210,16 @@ public class WeatherFragment extends Fragment {
         LineChartUtil.addLine(minTmpList,"tmpMin","#104744",lineChart);
         lineChart.notifyDataSetChanged();
         //lineChart.invalidate();
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date date = sdf.parse(weather.update.loc);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            Log.d(TAG, "showWeatherInfo: "+calendar.get(Calendar.HOUR_OF_DAY));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     //获取空气质量
     public void requestAQI(final String weatherId){

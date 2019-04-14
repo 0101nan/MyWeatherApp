@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
 import com.liyinan.myweather.gson.AQI;
 import com.liyinan.myweather.gson.Daily;
+import com.liyinan.myweather.gson.Hourly;
 import com.liyinan.myweather.gson.Weather;
 import com.liyinan.myweather.util.HttpUtil;
 import com.liyinan.myweather.util.LineChartUtil;
@@ -57,8 +58,11 @@ public class WeatherFragment extends Fragment {
 
     private String mWeatherId;
     private LineChart lineChart;
+    private LineChart lineChartPerHour;
 
-    private CardView mWeatherNowCard;
+    private CardView mWeatherNowCardView;
+    private CardView mWeatherNowAqiCardView;
+    private CardView mWeatherPerdayCardView;
 
     private TextView nowCondText;
     private TextView nowTmp;
@@ -97,6 +101,7 @@ public class WeatherFragment extends Fragment {
         nowTime=view.findViewById(R.id.now_date);
         nowTmp=view.findViewById(R.id.now_tmp);
         lineChart=view.findViewById(R.id.line_chart);
+        lineChartPerHour=view.findViewById(R.id.line_chart_per_hour);
         forecastLayout=view.findViewById(R.id.weather_forecast_layout);
         nowPm25=view.findViewById(R.id.now_pm25);
         nowQlty=view.findViewById(R.id.now_qlty_txt);
@@ -110,6 +115,30 @@ public class WeatherFragment extends Fragment {
         wind_sc_text=view.findViewById(R.id.wind_sc_text);
         uv_index_text=view.findViewById(R.id.uv_index_text);
         vis_text=view.findViewById(R.id.vis_text);
+
+        mWeatherNowCardView=view.findViewById(R.id.weather_now_cardview);
+        mWeatherNowAqiCardView=view.findViewById(R.id.weather_now_aqi_cardview);
+        mWeatherPerdayCardView=view.findViewById(R.id.weather_perday_cardview);
+
+        mWeatherNowCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        mWeatherNowAqiCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        mWeatherPerdayCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
         //查询天气
         mWeatherId=getArguments().getString(ARG_AREA_ID);
@@ -203,7 +232,6 @@ public class WeatherFragment extends Fragment {
         //显示当日天气
         nowTmp.setText(temperature+"℃");
         nowCondText.setText(cond);
-       // nowTime.setText(updateTime);
         max_tmp_text.setText(weather.dailyForecastList.get(0).tmp_max+"℃");
         min_tmp_text.setText(weather.dailyForecastList.get(0).tmp_min+"℃");
         pop_text.setText(weather.dailyForecastList.get(0).pop+"%");
@@ -225,7 +253,7 @@ public class WeatherFragment extends Fragment {
         }
 
         //显示每日天气曲线
-        LineChartUtil.initChart(lineChart);
+        LineChartUtil.initChart(lineChart,false,7,5);
         List<Integer> maxTmpList=new ArrayList<>();
         List<Integer> minTmpList=new ArrayList<>();
         for(Daily tmp:weather.dailyForecastList){
@@ -235,17 +263,28 @@ public class WeatherFragment extends Fragment {
         LineChartUtil.showLineChart(maxTmpList,"tmpMax","#1698a6",lineChart);
         LineChartUtil.addLine(minTmpList,"tmpMin","#104744",lineChart);
         lineChart.notifyDataSetChanged();
-        //lineChart.invalidate();
 
+        //每小时温度曲线
+        List<String> PerHourList=new ArrayList<>();
+        for(Hourly hourly:weather.hourlyList){
+            PerHourList.add(hourly.time.split(" ")[1]);
+        }
+        LineChartUtil.initChart(lineChartPerHour,PerHourList,true,24,7);
+        List<Integer> TmpPerHourList=new ArrayList<>();
+        for(Hourly hourly:weather.hourlyList){
+            TmpPerHourList.add(parseInt(hourly.tmp));
+        }
+        LineChartUtil.showLineChart(TmpPerHourList,"tmpMax","#1698a6",lineChartPerHour);
+        /*
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date date = sdf.parse(weather.update.loc);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
-            Log.d(TAG, "showWeatherInfo: "+calendar.get(Calendar.HOUR_OF_DAY));
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
     }
     //获取空气质量
     public void requestAQI(final String weatherId){

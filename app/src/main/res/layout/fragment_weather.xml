@@ -47,7 +47,7 @@
                     <ImageView
                         android:id="@+id/background_img"
                         android:layout_width="match_parent"
-                        android:layout_height="630dp"
+                        android:layout_height="850dp"
                         android:scaleType="matrix"
                         android:src="@drawable/back" />
                     <LinearLayout
@@ -58,6 +58,7 @@
                         <include layout="@layout/weather_title"/>
                         <include layout="@layout/weather_perday"/>
                         <include layout="@layout/weather_now"/>
+                        <include layout="@layout/linechart_per_hour"/>
                         <include layout="@layout/weather_now_aqi"/>
 
                         <TextView

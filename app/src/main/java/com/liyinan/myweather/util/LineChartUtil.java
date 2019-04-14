@@ -10,6 +10,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
@@ -17,23 +18,23 @@ import java.util.List;
 
 public class LineChartUtil {
 
-    public static void initChart(LineChart lineChart) {
+    public static void initChart(LineChart lineChart,boolean isTouched ,float sum,float show) {
         /***图表设置***/
         //是否展示网格线
         lineChart.setDrawGridBackground(false);
         //是否显示边界
         lineChart.setDrawBorders(false);
         //是否可以拖动
-        lineChart.setDragEnabled(false);
+        lineChart.setDragEnabled(isTouched);
         //是否有触摸事件
-        lineChart.setTouchEnabled(false);
+        lineChart.setTouchEnabled(isTouched);
         //设置XY轴动画效果
         //lineChart.animateY(2500);
         //lineChart.animateX(1500);
         //设置一页最大显示个数为6，超出部分就滑动
-        //float ratio = (float) 7/(float) 5;
+        float ratio = sum/show;
         //显示的时候是按照多大的比率缩放显示,1f表示不放大缩小
-        //lineChart.zoom(ratio,1f,0,0);
+        lineChart.zoom(ratio,1f,0,0);
 
         /***XY轴的设置***/
         //获取坐标轴
@@ -43,15 +44,71 @@ public class LineChartUtil {
         //隐藏坐标轴
         leftYAxis.setEnabled(false);
         rightYaxis.setEnabled(false);
-        xAxis.setEnabled(false);
+        xAxis.setEnabled(true);
         //X轴设置显示位置在底部
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMinimum(-0.2f);
-        xAxis.setAxisMaximum(6.2f);
+        //xAxis.setAxisMinimum(-0.2f);
+        //xAxis.setAxisMaximum(6.2f);
         xAxis.setGranularity(1f);
         //保证Y轴从0开始，不然会上移一点
         //leftYAxis.setAxisMinimum(0f);
         //rightYaxis.setAxisMinimum(0f);
+
+
+        /***折线图例 标签 设置***/
+        Legend legend = lineChart.getLegend();
+        //设置显示类型，LINE CIRCLE SQUARE EMPTY 等等 多种方式，查看LegendForm 即可
+        legend.setForm(Legend.LegendForm.NONE);
+        legend.setTextColor(Color.WHITE);
+        //legend.setTextSize(12f);
+        //显示位置 左下方
+        //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        //legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        //是否绘制在图表里面
+        //legend.setDrawInside(false);
+        //隐藏x轴描述
+        Description description = new Description();
+        description.setEnabled(false);
+        lineChart.setDescription(description);
+    }
+
+    public static void initChart(LineChart lineChart,List<String> xList,boolean isTouched ,float sum,float show) {
+        /***图表设置***/
+        //是否展示网格线
+        lineChart.setDrawGridBackground(false);
+        //是否显示边界
+        lineChart.setDrawBorders(false);
+        //是否可以拖动
+        lineChart.setDragEnabled(isTouched);
+        //是否有触摸事件
+        lineChart.setTouchEnabled(isTouched);
+        //设置XY轴动画效果
+        //lineChart.animateY(2500);
+        //lineChart.animateX(1500);
+        //设置一页最大显示个数为6，超出部分就滑动
+        float ratio = sum/show;
+        //显示的时候是按照多大的比率缩放显示,1f表示不放大缩小
+        lineChart.zoom(ratio,1f,0,0);
+
+        /***XY轴的设置***/
+        //获取坐标轴
+        XAxis xAxis = lineChart.getXAxis();
+        YAxis leftYAxis = lineChart.getAxisLeft();
+        YAxis rightYaxis = lineChart.getAxisRight();
+        //隐藏坐标轴
+        leftYAxis.setEnabled(false);
+        rightYaxis.setEnabled(false);
+        xAxis.setEnabled(true);
+        //X轴设置显示位置在底部
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //xAxis.setAxisMinimum(-0.2f);
+        //xAxis.setAxisMaximum(6.2f);
+        xAxis.setGranularity(1f);
+        //保证Y轴从0开始，不然会上移一点
+        //leftYAxis.setAxisMinimum(0f);
+        //rightYaxis.setAxisMinimum(0f);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
 
 
         /***折线图例 标签 设置***/

@@ -30,6 +30,10 @@ public class LineChartUtil {
         //设置XY轴动画效果
         //lineChart.animateY(2500);
         //lineChart.animateX(1500);
+        //设置一页最大显示个数为6，超出部分就滑动
+        //float ratio = (float) 7/(float) 5;
+        //显示的时候是按照多大的比率缩放显示,1f表示不放大缩小
+        //lineChart.zoom(ratio,1f,0,0);
 
         /***XY轴的设置***/
         //获取坐标轴

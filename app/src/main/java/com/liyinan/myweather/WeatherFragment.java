@@ -66,6 +66,15 @@ public class WeatherFragment extends Fragment {
     private TextView nowQlty;
     private TextView nowPm25;
     private TextView nowCityName;
+    private TextView max_tmp_text;
+    private TextView min_tmp_text;
+    private TextView pop_text;
+    private TextView pcpn_text;
+    private TextView wind_dir_text;
+    private TextView wind_sc_text;
+    private TextView uv_index_text;
+    private TextView vis_text;
+
 
     //由启动处创建附带地址的fragment
     public static WeatherFragment newInstance(String areaId){
@@ -92,6 +101,15 @@ public class WeatherFragment extends Fragment {
         nowPm25=view.findViewById(R.id.now_pm25);
         nowQlty=view.findViewById(R.id.now_qlty_txt);
         nowCityName=view.findViewById(R.id.city_name);
+
+        max_tmp_text=view.findViewById(R.id.max_tmp_text);
+        min_tmp_text=view.findViewById(R.id.min_tmp_text);
+        pop_text=view.findViewById(R.id.pop_text);
+        pcpn_text=view.findViewById(R.id.pcpn_text);
+        wind_dir_text=view.findViewById(R.id.wind_dir_text);
+        wind_sc_text=view.findViewById(R.id.wind_sc_text);
+        uv_index_text=view.findViewById(R.id.uv_index_text);
+        vis_text=view.findViewById(R.id.vis_text);
 
         //查询天气
         mWeatherId=getArguments().getString(ARG_AREA_ID);
@@ -186,6 +204,14 @@ public class WeatherFragment extends Fragment {
         nowTmp.setText(temperature+"℃");
         nowCondText.setText(cond);
        // nowTime.setText(updateTime);
+        max_tmp_text.setText(weather.dailyForecastList.get(0).tmp_max+"℃");
+        min_tmp_text.setText(weather.dailyForecastList.get(0).tmp_min+"℃");
+        pop_text.setText(weather.dailyForecastList.get(0).pop+"%");
+        pcpn_text.setText(weather.dailyForecastList.get(0).pcpn+"mm");
+        wind_dir_text.setText(weather.dailyForecastList.get(0).wind_dir);
+        wind_sc_text.setText(weather.dailyForecastList.get(0).wind_sc+"级");
+        uv_index_text.setText(weather.dailyForecastList.get(0).uv_index+"级");
+        vis_text.setText(weather.dailyForecastList.get(0).vis+"km");
 
         //显示逐日天气
         forecastLayout.removeAllViews();

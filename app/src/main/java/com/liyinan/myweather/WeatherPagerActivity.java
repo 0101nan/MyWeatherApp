@@ -169,8 +169,10 @@ public class WeatherPagerActivity extends AppCompatActivity {
         //刷新viewpager
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
         String jsonAreaList=prefs.getString("areaList",null);
-        mAreas=Utility.handleAreaList(jsonAreaList);
-        mViewPager.getAdapter().notifyDataSetChanged();
-        mIndicator.setViewPager(mViewPager);
+        if(jsonAreaList!=null){
+            mAreas= Utility.handleAreaList(jsonAreaList);
+            mViewPager.getAdapter().notifyDataSetChanged();
+            mIndicator.setViewPager(mViewPager);
+        }
     }
 }

@@ -79,6 +79,8 @@ public class WeatherFragment extends Fragment {
     private TextView uv_index_text;
     private TextView vis_text;
 
+    private AQIView mAQIView;
+
 
     //由启动处创建附带地址的fragment
     public static WeatherFragment newInstance(String areaId){
@@ -104,7 +106,7 @@ public class WeatherFragment extends Fragment {
         lineChartPerHour=view.findViewById(R.id.line_chart_per_hour);
         forecastLayout=view.findViewById(R.id.weather_forecast_layout);
         nowPm25=view.findViewById(R.id.now_pm25);
-        nowQlty=view.findViewById(R.id.now_qlty_txt);
+        //nowQlty=view.findViewById(R.id.now_qlty_txt);
         nowCityName=view.findViewById(R.id.city_name);
 
         max_tmp_text=view.findViewById(R.id.max_tmp_text);
@@ -119,6 +121,8 @@ public class WeatherFragment extends Fragment {
         mWeatherNowCardView=view.findViewById(R.id.weather_now_cardview);
         mWeatherNowAqiCardView=view.findViewById(R.id.weather_now_aqi_cardview);
         mWeatherPerdayCardView=view.findViewById(R.id.weather_perday_cardview);
+
+        mAQIView=view.findViewById(R.id.aqi_view);
 
         mWeatherNowCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,6 +233,7 @@ public class WeatherFragment extends Fragment {
 
         nowCityName.setText(weather.basic.location);
         nowTime.setText(weather.update.loc.split(" ")[1]);
+
         //显示当日天气
         nowTmp.setText(temperature+"℃");
         nowCondText.setText(cond);
@@ -275,6 +280,7 @@ public class WeatherFragment extends Fragment {
             TmpPerHourList.add(parseInt(hourly.tmp));
         }
         LineChartUtil.showLineChart(TmpPerHourList,"tmpMax","#1698a6",lineChartPerHour);
+        lineChartPerHour.notifyDataSetChanged();
         /*
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -328,7 +334,8 @@ public class WeatherFragment extends Fragment {
     private void showAQIInfo(AQI aqi) {
         String qlty=aqi.airNow.qlty;
         String pm25=aqi.airNow.pm25;
-        nowQlty.setText(qlty);
+        mAQIView.setProgress(parseInt(aqi.airNow.aqi));
+        //nowQlty.setText(qlty);
         nowPm25.setText(pm25);
     }
 

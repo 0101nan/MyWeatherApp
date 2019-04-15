@@ -30,31 +30,21 @@
             android:layout_margin="15dp">
 
             <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:orientation="vertical"
+                android:layout_width="115dp"
+                android:layout_height="100dp">
+                <com.liyinan.myweather.AQIView
+                    android:id="@+id/aqi_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                    <TextView
-                        android:id="@+id/now_qlty_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="40sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="空气质量"/>
-
-                </LinearLayout>
-
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    app:pr_bg_end_color="#0595B359"
+                    app:pr_bg_mid_color="#0595B359"
+                    app:pr_bg_start_color="#0595B359"
+                    app:pr_progress="0"
+                    app:pr_progress_end_color="#D96161"
+                    app:pr_progress_mid_color="#E0991D"
+                    app:pr_progress_start_color="#95B359"
+                    app:pr_progress_width="8dp" />
             </RelativeLayout>
 
             <RelativeLayout

@@ -55,9 +55,9 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:layout_marginTop="55dp">
-                        <include layout="@layout/weather_title"/>
 
-                        <include layout="@layout/weather_perday"/>
+                        <include layout="@layout/weather_title"/>
+                        <include layout="@layout/weather_per_day"/>
                         <include layout="@layout/weather_now"/>
                         <include layout="@layout/linechart_per_hour"/>
                         <include layout="@layout/weather_now_aqi"/>

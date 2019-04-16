@@ -55,22 +55,122 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                    <TextView
-                        android:id="@+id/now_pm25"
-                        android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="40sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="15dp">
+                        <TextView
+                            android:id="@+id/aqi_main_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="主要污染物："/>
+                        <TextView
+                            android:id="@+id/aqi_main_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/aqi_main_title"
+                            android:text="pm2.5"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="PM2.5"/>
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="15dp">
+                        <TextView
+                            android:id="@+id/aqi_pm10_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PM10："/>
+                        <TextView
+                            android:id="@+id/aqi_pm10_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/aqi_pm10_title"
+                            android:text="pm2.5"/>
 
+                        <TextView
+                            android:id="@+id/aqi_pm25_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/aqi_pm10_text"
+                            android:layout_marginLeft="15dp"
+                            android:text="PM2.5："/>
+                        <TextView
+                            android:id="@+id/aqi_pm25_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/aqi_pm25_title"
+                            android:text="pm2.5"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="15dp">
+                        <TextView
+                            android:id="@+id/aqi_no2_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="NO2："/>
+                        <TextView
+                            android:id="@+id/aqi_no2_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/aqi_no2_title"
+                            android:text="pm2.5"/>
+
+                        <TextView
+                            android:id="@+id/aqi_so2_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@id/aqi_no2_text"
+                            android:text="SO2："/>
+                        <TextView
+                            android:id="@+id/aqi_so2_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/aqi_so2_title"
+                            android:text="pm2.5"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="15dp">
+                        <TextView
+                            android:id="@+id/aqi_co_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="CO："/>
+                        <TextView
+                            android:id="@+id/aqi_co_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/aqi_co_title"
+                            android:text="pm2.5"/>
+
+                        <TextView
+                            android:id="@+id/aqi_o3_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@id/aqi_co_text"
+                            android:text="O3："/>
+                        <TextView
+                            android:id="@+id/aqi_o3_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/aqi_o3_title"
+                            android:text="pm2.5"/>
+                    </RelativeLayout>
                 </LinearLayout>
 
             </RelativeLayout>

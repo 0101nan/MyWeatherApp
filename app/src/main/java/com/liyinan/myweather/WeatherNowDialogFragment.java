@@ -15,7 +15,7 @@ public class WeatherNowDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View v= LayoutInflater.from(getActivity()).inflate(R.layout.weather_perday,null);
+        View v= LayoutInflater.from(getActivity()).inflate(R.layout.weather_per_day,null);
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .create();

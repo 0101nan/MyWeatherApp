@@ -2,6 +2,7 @@ package com.liyinan.myweather.util;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.liyinan.myweather.DiagramView;
 import com.liyinan.myweather.R;
+import com.liyinan.myweather.WeatherNowDialogFragment;
 import com.liyinan.myweather.WeatherPagerActivity;
 import com.liyinan.myweather.gson.Weather;
+
+import static org.litepal.LitePalApplication.getContext;
 
 public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHolder> {
     private  int[] mHeight;
@@ -25,6 +29,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
     private int mMax;
     private int mMin;
     private Weather mWeather;
+    private FragmentManager mManager;
 
     class ViewHolder extends RecyclerView.ViewHolder{
         DiagramView mDiagramView;
@@ -40,11 +45,12 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
         }
     }
 
-    public DiagramAdapter(int[] height, int[] low, int type,Weather weather){
+    public DiagramAdapter(int[] height, int[] low, int type,Weather weather,FragmentManager manager){
         mHeight=height;
         mLows=low;
         mType=type;
         mWeather=weather;
+        mManager=manager;
         caculateTimes();
     }
 
@@ -81,12 +87,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_weather_perday,null,false);
         ViewHolder holder=new ViewHolder(view);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         mMax=mHeight[0];
         mMin=mLows[0];
         for (int j=0;j<mHeight.length;j++){
@@ -97,7 +98,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
                 mMin=mLows[j];
             }
         }
-        return new ViewHolder(view);
+        return holder;
     }
 
     @Override
@@ -138,8 +139,21 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
         }
         holder.mDiagramView.setText(mHeight[position],mLows[position]);
         holder.mDateText.setText(mWeather.dailyForecastList.get(position).date.split("-")[2]);
-        Glide.with(holder.itemView.getContext()).load(R.drawable.weather_snow_rain).into(holder.mDayImg);
-        Glide.with(holder.itemView.getContext()).load(R.drawable.weather_snow_rain).into(holder.mNightImg);
+        String dayImg=Utility.weatherImgTitle(mWeather.dailyForecastList.get(position).cond_code_d,true);
+        String nightImg=Utility.weatherImgTitle(mWeather.dailyForecastList.get(position).cond_code_n,false);
+        int dayId = getContext().getResources().getIdentifier(dayImg, "drawable", getContext().getPackageName());
+        int nightId = getContext().getResources().getIdentifier(nightImg, "drawable", getContext().getPackageName());
+        Glide.with(holder.itemView.getContext()).load(dayId).into(holder.mDayImg);
+        Glide.with(holder.itemView.getContext()).load(nightId).into(holder.mNightImg);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WeatherNowDialogFragment fragment=WeatherNowDialogFragment.newInstance(position,mWeather);
+                fragment.show(mManager,null);
+            }
+        });
+
     }
 
     @Override

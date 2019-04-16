@@ -58,7 +58,6 @@
 
                         <include layout="@layout/weather_title"/>
                         <include layout="@layout/weather_per_day"/>
-                        <include layout="@layout/weather_now"/>
                         <include layout="@layout/linechart_per_hour"/>
                         <include layout="@layout/weather_now_aqi"/>
 

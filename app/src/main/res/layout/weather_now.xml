@@ -34,7 +34,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/weather_clear"
+                    android:src="@drawable/sun_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/max_tmp_title"
@@ -62,7 +62,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/weather_few_clouds"
+                    android:src="@drawable/few_cloud_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/min_tmp_title"
@@ -95,7 +95,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/weather_clouds"
+                    android:src="@drawable/drizzle_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/pop_title"
@@ -123,7 +123,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/weather_snow_rain"
+                    android:src="@drawable/drizzle_night"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/pcpn_title"
@@ -156,7 +156,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/weather_wind"
+                    android:src="@drawable/wind_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/wind_dir_title"
@@ -184,7 +184,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/weather_fog"
+                    android:src="@drawable/wind_night"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/wind_sc_title"
@@ -217,7 +217,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/weather_clear_night"
+                    android:src="@drawable/sun_night"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/uv_index_title"
@@ -245,7 +245,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/weather_haze"
+                    android:src="@drawable/haze_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/vis_title"

@@ -72,22 +72,14 @@ public class WeatherFragment extends Fragment {
     private TextView nowQlty;
     private TextView nowPm25;
     private TextView nowCityName;
-    private TextView max_tmp_text;
-    private TextView min_tmp_text;
-    private TextView pop_text;
-    private TextView pcpn_text;
-    private TextView wind_dir_text;
-    private TextView wind_sc_text;
-    private TextView uv_index_text;
-    private TextView vis_text;
 
     private AQIView mAQIView;
 
     private RecyclerView mDailyForcastRecyclerView;
     private int[] mheights;
     private int[] mlows;
-    private List<Integer> mHeights=new ArrayList<>();
-    private List<Integer> mLows=new ArrayList<>();
+    private List<Integer> mHeights;
+    private List<Integer> mLows;
     private DiagramAdapter mDailyForcastAdapter;
 
 
@@ -116,15 +108,6 @@ public class WeatherFragment extends Fragment {
         //nowPm25=view.findViewById(R.id.now_pm25);
         //nowQlty=view.findViewById(R.id.now_qlty_txt);
         nowCityName=view.findViewById(R.id.city_name);
-
-        max_tmp_text=view.findViewById(R.id.max_tmp_text);
-        min_tmp_text=view.findViewById(R.id.min_tmp_text);
-        pop_text=view.findViewById(R.id.pop_text);
-        pcpn_text=view.findViewById(R.id.pcpn_text);
-        wind_dir_text=view.findViewById(R.id.wind_dir_text);
-        wind_sc_text=view.findViewById(R.id.wind_sc_text);
-        uv_index_text=view.findViewById(R.id.uv_index_text);
-        vis_text=view.findViewById(R.id.vis_text);
 
         mWeatherNowCardView=view.findViewById(R.id.weather_now_cardview);
         mWeatherNowAqiCardView=view.findViewById(R.id.weather_now_aqi_cardview);
@@ -182,6 +165,7 @@ public class WeatherFragment extends Fragment {
             public void onRefresh() {
                 requestWeather(mWeatherId);
                 requestAQI(mWeatherId);
+                mDailyForcastAdapter.notifyDataSetChanged();
             }
         });
         return view;
@@ -249,27 +233,10 @@ public class WeatherFragment extends Fragment {
         //显示当日天气
         nowTmp.setText(temperature+"℃");
         nowCondText.setText(cond);
-        max_tmp_text.setText(weather.dailyForecastList.get(0).tmp_max+"℃");
-        min_tmp_text.setText(weather.dailyForecastList.get(0).tmp_min+"℃");
-        pop_text.setText(weather.dailyForecastList.get(0).pop+"%");
-        pcpn_text.setText(weather.dailyForecastList.get(0).pcpn+"mm");
-        wind_dir_text.setText(weather.dailyForecastList.get(0).wind_dir);
-        wind_sc_text.setText(weather.dailyForecastList.get(0).wind_sc+"级");
-        uv_index_text.setText(weather.dailyForecastList.get(0).uv_index+"级");
-        vis_text.setText(weather.dailyForecastList.get(0).vis+"km");
 
         //显示逐日天气
-        /*
-        forecastLayout.removeAllViews();
-        for (Daily daily :weather.dailyForecastList) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.weather_perday_item, forecastLayout, false);
-            TextView dateText = view.findViewById(R.id.weather_perday_date_text);
-            TextView infoText = view.findViewById(R.id.weather_perday_cond_text);
-            dateText.setText(daily.date.split("-")[2]);
-            infoText.setText(daily.cond_txt_d);
-            forecastLayout.addView(view);
-        }
-        */
+        mHeights=new ArrayList<>();
+        mLows=new ArrayList<>();
         for (Daily daily:weather.dailyForecastList) {
             mHeights.add(parseInt(daily.tmp_max));
             mLows.add(parseInt(daily.tmp_min));
@@ -281,25 +248,11 @@ public class WeatherFragment extends Fragment {
             mlows[i]=mLows.get(i);
         }
 
-
-        mDailyForcastAdapter=new DiagramAdapter(mheights,mlows,1,weather);
+        mDailyForcastAdapter=new DiagramAdapter(mheights,mlows,1,weather,getFragmentManager());
         mDailyForcastRecyclerView.setAdapter(mDailyForcastAdapter);
         LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         mDailyForcastRecyclerView.setLayoutManager(manager);
 
-        /*
-        //显示每日天气曲线
-        LineChartUtil.initChart(lineChart,false,7,5);
-        List<Integer> maxTmpList=new ArrayList<>();
-        List<Integer> minTmpList=new ArrayList<>();
-        for(Daily tmp:weather.dailyForecastList){
-            maxTmpList.add(parseInt(tmp.tmp_max));
-            minTmpList.add(parseInt(tmp.tmp_min));
-        }
-        LineChartUtil.showLineChart(maxTmpList,"tmpMax","#1698a6",lineChart);
-        LineChartUtil.addLine(minTmpList,"tmpMin","#104744",lineChart);
-        lineChart.notifyDataSetChanged();
-        */
 
         //每小时温度曲线
         List<String> PerHourList=new ArrayList<>();
@@ -313,16 +266,7 @@ public class WeatherFragment extends Fragment {
         }
         LineChartUtil.showLineChart(TmpPerHourList,"tmpMax","#1698a6",lineChartPerHour);
         lineChartPerHour.notifyDataSetChanged();
-        /*
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            Date date = sdf.parse(weather.update.loc);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
+
     }
     //获取空气质量
     public void requestAQI(final String weatherId){
@@ -370,6 +314,5 @@ public class WeatherFragment extends Fragment {
         //nowQlty.setText(qlty);
         //nowPm25.setText(pm25);
     }
-
 
 }

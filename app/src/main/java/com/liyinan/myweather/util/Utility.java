@@ -116,4 +116,40 @@ public class Utility {
         return baseList.get(position);
     }
 
+    public static String weatherImgTitle(String cond_id,boolean isDay) {
+        String result;
+        if (cond_id.equals("100")) {
+            result = "sun";
+        } else if (Integer.parseInt(cond_id) >= 102 && Integer.parseInt(cond_id) <= 104) {
+            result = "few_cloud";
+        } else if (cond_id.equals("101")) {
+            result = "cloud";
+        } else if (cond_id.equals("300") || cond_id.equals("305") || cond_id.equals("309")) {
+            result = "drizzle";
+        } else if (cond_id.equals("301") || (Integer.parseInt(cond_id) >= 306 && Integer.parseInt(cond_id) <= 308) || (Integer.parseInt(cond_id) >= 310 && Integer.parseInt(cond_id) <= 399)) {
+            result = "heavy_rain";
+        } else if (cond_id.equals("404")) {
+            result = "snow_rain";
+        } else if (cond_id.equals("304")) {
+            result = "hail";
+        } else if ((Integer.parseInt(cond_id) >= 401 && Integer.parseInt(cond_id) <= 403) || (Integer.parseInt(cond_id) >= 405 && Integer.parseInt(cond_id) <= 499)) {
+            result = "heavy_snow";
+        } else if ((Integer.parseInt(cond_id) >= 302 && Integer.parseInt(cond_id) <= 303)) {
+            result = "storm";
+        } else if ((Integer.parseInt(cond_id) >= 200 && Integer.parseInt(cond_id) <= 213)) {
+            result = "wind";
+        } else if ((Integer.parseInt(cond_id) >= 500 && Integer.parseInt(cond_id) <= 515)) {
+            result = "haze";
+        } else if (cond_id.equals("400")) {
+            result = "snow";
+        } else {
+            return "none";
+        }
+        if (isDay) {
+            result = result + "_day";
+        } else {
+            result = result + "_night";
+        }
+        return result;
+    }
 }

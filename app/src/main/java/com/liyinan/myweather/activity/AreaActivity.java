@@ -1,6 +1,5 @@
-package com.liyinan.myweather;
+package com.liyinan.myweather.activity;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.liyinan.myweather.fragment.AreaAddFragment;
+import com.liyinan.myweather.fragment.AreaListFragment;
+import com.liyinan.myweather.R;
 import com.liyinan.myweather.util.ActivityCollector;
 
 public class AreaActivity extends AppCompatActivity {

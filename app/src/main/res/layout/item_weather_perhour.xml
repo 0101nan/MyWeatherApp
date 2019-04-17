@@ -6,28 +6,26 @@
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground">
     <TextView
-        android:id="@+id/weather_perday_date"
+        android:id="@+id/weather_perhour_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"/>
-    <ImageView
-        android:id="@+id/weather_perday_imgd"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    <TextView
+        android:id="@+id/weather_perhour_cond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>
-
-    <com.liyinan.myweather.view.DiagramView
-        android:id="@+id/dv"
+    <com.liyinan.myweather.view.WeatherPerHourView
+        android:id="@+id/weather_perhour_linechart"
         android:layout_width="70dp"
-        android:layout_height="100dp" />
-
+        android:layout_height="80dp" />
     <ImageView
-        android:id="@+id/weather_perday_imgn"
+        android:id="@+id/weather_perhour_img"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"/>
+        android:layout_gravity="center_horizontal"/>
+
 </LinearLayout>

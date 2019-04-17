@@ -1,4 +1,4 @@
-package com.liyinan.myweather;
+package com.liyinan.myweather.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.liyinan.myweather.R;
 import com.liyinan.myweather.gson.Weather;
+
+import org.w3c.dom.Text;
 
 public class WeatherNowDialogFragment extends DialogFragment {
     private static final String POSITION="position";
@@ -23,6 +26,9 @@ public class WeatherNowDialogFragment extends DialogFragment {
     private TextView wind_sc_text;
     private TextView uv_index_text;
     private TextView vis_text;
+    private TextView DailyDateTextView;
+    private TextView DailyCondDayTextView;
+    private TextView DailyCondNightTextView;
 
     public static WeatherNowDialogFragment newInstance(Integer position, Weather weather){
         Bundle args=new Bundle();
@@ -41,6 +47,7 @@ public class WeatherNowDialogFragment extends DialogFragment {
         View v= LayoutInflater.from(getActivity()).inflate(R.layout.weather_now,null);
         Weather weather=(Weather)getArguments().getSerializable(WEATHER);
         Integer position=getArguments().getInt(POSITION);
+
         max_tmp_text=v.findViewById(R.id.max_tmp_text);
         min_tmp_text=v.findViewById(R.id.min_tmp_text);
         pop_text=v.findViewById(R.id.pop_text);
@@ -49,6 +56,10 @@ public class WeatherNowDialogFragment extends DialogFragment {
         wind_sc_text=v.findViewById(R.id.wind_sc_text);
         uv_index_text=v.findViewById(R.id.uv_index_text);
         vis_text=v.findViewById(R.id.vis_text);
+        DailyDateTextView=v.findViewById(R.id.date_text);
+        DailyCondDayTextView=v.findViewById(R.id.cond_txt_d_text);
+        DailyCondNightTextView=v.findViewById(R.id.cond_txt_n_text);
+
         max_tmp_text.setText(weather.dailyForecastList.get(position).tmp_max+"℃");
         min_tmp_text.setText(weather.dailyForecastList.get(position).tmp_min+"℃");
         pop_text.setText(weather.dailyForecastList.get(position).pop+"%");
@@ -57,6 +68,10 @@ public class WeatherNowDialogFragment extends DialogFragment {
         wind_sc_text.setText(weather.dailyForecastList.get(position).wind_sc+"级");
         uv_index_text.setText(weather.dailyForecastList.get(position).uv_index+"级");
         vis_text.setText(weather.dailyForecastList.get(position).vis+"km");
+        DailyDateTextView.setText(weather.dailyForecastList.get(position).date);
+        DailyCondDayTextView.setText(weather.dailyForecastList.get(position).cond_txt_d);
+        DailyCondNightTextView.setText(weather.dailyForecastList.get(position).cond_txt_n);
+
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .create();

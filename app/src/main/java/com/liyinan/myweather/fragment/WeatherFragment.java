@@ -1,23 +1,15 @@
-package com.liyinan.myweather;
+package com.liyinan.myweather.fragment;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,20 +20,22 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
+import com.liyinan.myweather.adapter.WeatherPerHourAdapter;
+import com.liyinan.myweather.view.AQIView;
+import com.liyinan.myweather.R;
 import com.liyinan.myweather.gson.AQI;
 import com.liyinan.myweather.gson.Daily;
 import com.liyinan.myweather.gson.Hourly;
 import com.liyinan.myweather.gson.Weather;
-import com.liyinan.myweather.util.DiagramAdapter;
+import com.liyinan.myweather.adapter.DiagramAdapter;
 import com.liyinan.myweather.util.HttpUtil;
 import com.liyinan.myweather.util.LineChartUtil;
 import com.liyinan.myweather.util.Utility;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -54,13 +48,10 @@ public class WeatherFragment extends Fragment {
     private static final String ARG_AREA_ID="area_id";
     private static final String TAG = "WeatherFragment";
 
-    private LinearLayout forecastLayout;
     private ImageView titleImageView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private String mWeatherId;
-    private LineChart lineChart;
-    private LineChart lineChartPerHour;
 
     private CardView mWeatherNowCardView;
     private CardView mWeatherNowAqiCardView;
@@ -69,18 +60,25 @@ public class WeatherFragment extends Fragment {
     private TextView nowCondText;
     private TextView nowTmp;
     private TextView nowTime;
-    private TextView nowQlty;
-    private TextView nowPm25;
     private TextView nowCityName;
+    private TextView aqiMainText;
+    private TextView aqiPM10Text;
+    private TextView aqiPM25Text;
+    private TextView aqiNO2Text;
+    private TextView aqiSO2Text;
+    private TextView aqiCOTExt;
+    private TextView aqiO3Text;
 
     private AQIView mAQIView;
 
     private RecyclerView mDailyForcastRecyclerView;
-    private int[] mheights;
-    private int[] mlows;
     private List<Integer> mHeights;
     private List<Integer> mLows;
     private DiagramAdapter mDailyForcastAdapter;
+
+    private RecyclerView mHourilForcastRecyclerView;
+    private List<Integer> mHourTmps;
+    private WeatherPerHourAdapter mWeatherPerHourAdapter;
 
 
     //由启动处创建附带地址的fragment
@@ -103,11 +101,15 @@ public class WeatherFragment extends Fragment {
         nowCondText=view.findViewById(R.id.now_cond_txt);
         nowTime=view.findViewById(R.id.now_date);
         nowTmp=view.findViewById(R.id.now_tmp);
-        lineChart=view.findViewById(R.id.line_chart);
-        lineChartPerHour=view.findViewById(R.id.line_chart_per_hour);
-        //nowPm25=view.findViewById(R.id.now_pm25);
-        //nowQlty=view.findViewById(R.id.now_qlty_txt);
         nowCityName=view.findViewById(R.id.city_name);
+
+        aqiMainText=view.findViewById(R.id.aqi_main_text);
+        aqiPM10Text=view.findViewById(R.id.aqi_pm10_text);
+        aqiPM25Text=view.findViewById(R.id.aqi_pm25_text);
+        aqiNO2Text=view.findViewById(R.id.aqi_no2_text);
+        aqiCOTExt=view.findViewById(R.id.aqi_co_text);
+        aqiO3Text=view.findViewById(R.id.aqi_o3_text);
+        aqiSO2Text=view.findViewById(R.id.aqi_so2_text);
 
         mWeatherNowCardView=view.findViewById(R.id.weather_now_cardview);
         mWeatherNowAqiCardView=view.findViewById(R.id.weather_now_aqi_cardview);
@@ -116,6 +118,7 @@ public class WeatherFragment extends Fragment {
         mAQIView=view.findViewById(R.id.aqi_view);
 
         mDailyForcastRecyclerView=view.findViewById(R.id.weather_perday_recyclerview);
+        mHourilForcastRecyclerView=view.findViewById(R.id.weather_perhour_recyclerview);
 
 
 
@@ -255,17 +258,14 @@ public class WeatherFragment extends Fragment {
 
 
         //每小时温度曲线
-        List<String> PerHourList=new ArrayList<>();
-        for(Hourly hourly:weather.hourlyList){
-            PerHourList.add(hourly.time.split(" ")[1]);
+        mHourTmps=new ArrayList<>();
+        for (Hourly hourly:weather.hourlyList){
+            mHourTmps.add(parseInt(hourly.tmp));
         }
-        LineChartUtil.initChart(lineChartPerHour,PerHourList,true,24,7);
-        List<Integer> TmpPerHourList=new ArrayList<>();
-        for(Hourly hourly:weather.hourlyList){
-            TmpPerHourList.add(parseInt(hourly.tmp));
-        }
-        LineChartUtil.showLineChart(TmpPerHourList,"tmpMax","#1698a6",lineChartPerHour);
-        lineChartPerHour.notifyDataSetChanged();
+        mWeatherPerHourAdapter=new WeatherPerHourAdapter(mHourTmps,weather,getFragmentManager());
+        mHourilForcastRecyclerView.setAdapter(mWeatherPerHourAdapter);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        mHourilForcastRecyclerView.setLayoutManager(linearLayoutManager);
 
     }
     //获取空气质量
@@ -308,11 +308,16 @@ public class WeatherFragment extends Fragment {
 
     //显示空气质量
     private void showAQIInfo(AQI aqi) {
-        String qlty=aqi.airNow.qlty;
-        //String pm25=aqi.airNow.pm25;
         mAQIView.setProgress(parseInt(aqi.airNow.aqi));
-        //nowQlty.setText(qlty);
-        //nowPm25.setText(pm25);
+
+        aqiMainText.setText(aqi.airNow.main);
+        aqiPM10Text.setText(aqi.airNow.pm10);
+        aqiPM25Text.setText(aqi.airNow.pm25);
+        aqiNO2Text.setText(aqi.airNow.no2);
+        aqiCOTExt.setText(aqi.airNow.co);
+        aqiO3Text.setText(aqi.airNow.o3);
+        aqiSO2Text.setText(aqi.airNow.so2);
+
     }
 
 }

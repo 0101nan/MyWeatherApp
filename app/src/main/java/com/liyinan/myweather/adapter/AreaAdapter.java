@@ -1,30 +1,24 @@
-package com.liyinan.myweather;
+package com.liyinan.myweather.adapter;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.liyinan.myweather.db.Area;
+import com.liyinan.myweather.R;
+import com.liyinan.myweather.activity.WeatherPagerActivity;
 import com.liyinan.myweather.gson.Area1;
-
-import org.litepal.LitePal;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.WeakHashMap;
 
 public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     private List<Area1>  mAreaList;
@@ -58,7 +52,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 int position=holder.getAdapterPosition();
-                Intent intent=WeatherPagerActivity.newIntent(v.getContext(),mAreaList.get(position).getAreaCode());
+                Intent intent= WeatherPagerActivity.newIntent(v.getContext(),mAreaList.get(position).getAreaCode());
                 v.getContext().startActivity(intent);
             }
         });

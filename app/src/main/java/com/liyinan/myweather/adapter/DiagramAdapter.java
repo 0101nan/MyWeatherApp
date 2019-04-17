@@ -1,6 +1,5 @@
-package com.liyinan.myweather.util;
+package com.liyinan.myweather.adapter;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.liyinan.myweather.DiagramView;
+import com.liyinan.myweather.view.DiagramView;
 import com.liyinan.myweather.R;
-import com.liyinan.myweather.WeatherNowDialogFragment;
-import com.liyinan.myweather.WeatherPagerActivity;
+import com.liyinan.myweather.fragment.WeatherNowDialogFragment;
 import com.liyinan.myweather.gson.Weather;
+import com.liyinan.myweather.util.Utility;
 
 import static org.litepal.LitePalApplication.getContext;
 
@@ -139,7 +138,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
         }
         holder.mDiagramView.setText(mHeight[position],mLows[position]);
         holder.mDateText.setText(mWeather.dailyForecastList.get(position).date.split("-")[2]);
-        String dayImg=Utility.weatherImgTitle(mWeather.dailyForecastList.get(position).cond_code_d,true);
+        String dayImg= Utility.weatherImgTitle(mWeather.dailyForecastList.get(position).cond_code_d,true);
         String nightImg=Utility.weatherImgTitle(mWeather.dailyForecastList.get(position).cond_code_n,false);
         int dayId = getContext().getResources().getIdentifier(dayImg, "drawable", getContext().getPackageName());
         int nightId = getContext().getResources().getIdentifier(nightImg, "drawable", getContext().getPackageName());

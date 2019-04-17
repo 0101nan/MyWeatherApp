@@ -1,6 +1,5 @@
-package com.liyinan.myweather;
+package com.liyinan.myweather.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,14 +20,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.liyinan.myweather.db.Area;
+import com.liyinan.myweather.R;
+import com.liyinan.myweather.fragment.WeatherFragment;
 import com.liyinan.myweather.gson.Area1;
 import com.liyinan.myweather.util.ActivityCollector;
 import com.liyinan.myweather.util.Utility;
-
-import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
-package com.liyinan.myweather;
+package com.liyinan.myweather.fragment;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,25 +9,17 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.liyinan.myweather.db.Area;
+import com.liyinan.myweather.R;
+import com.liyinan.myweather.adapter.AreaAdapter;
 import com.liyinan.myweather.gson.Area1;
 import com.liyinan.myweather.util.Utility;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.litepal.LitePal;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class AreaListFragment extends Fragment {
     private AreaAdapter mAreaAdapter;

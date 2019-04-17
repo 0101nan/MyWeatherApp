@@ -15,25 +15,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/now_title"
+                android:id="@+id/hourly_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
-                android:text="当日详情"
+                android:text="小时详情"
                 android:textSize="20sp"/>
             <TextView
-                android:id="@+id/date_text"
+                android:id="@+id/hourly_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/now_title"
-                android:layout_alignBottom="@id/now_title"
-                android:layout_marginLeft="5dp"/>
+                android:layout_toRightOf="@id/hourly_title"
+                android:layout_alignBottom="@id/hourly_title"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"/>
         </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -43,68 +43,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/cond_txt_d_img"
-                    android:layout_alignParentLeft="true"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/drizzle_day"
-                    android:layout_marginLeft="30dp"/>
-                <TextView
-                    android:id="@+id/cond_txt_d_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/cond_txt_d_img"
-                    android:text="白天天气"
-                    android:layout_marginLeft="5dp"/>
-                <TextView
-                    android:id="@+id/cond_txt_d_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/cond_txt_d_title"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <ImageView
-                    android:id="@+id/cond_txt_n_img"
-                    android:layout_alignParentLeft="true"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/drizzle_night"
-                    android:layout_marginLeft="30dp"/>
-                <TextView
-                    android:id="@+id/cond_txt_n_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/cond_txt_n_img"
-                    android:text="夜间天气"
-                    android:layout_marginLeft="5dp"/>
-                <TextView
-                    android:id="@+id/cond_txt_n_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/cond_txt_n_title"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"/>
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <ImageView
-                    android:id="@+id/max_tmp_img"
+                    android:id="@+id/hourly_tmp_img"
                     android:layout_alignParentLeft="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -112,18 +51,18 @@
                     android:src="@drawable/sun_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
-                    android:id="@+id/max_tmp_title"
+                    android:id="@+id/hourly_tmp_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/max_tmp_img"
-                    android:text="最高温度"
+                    android:layout_toRightOf="@id/hourly_tmp_img"
+                    android:text="实时温度"
                     android:layout_marginLeft="5dp"/>
                 <TextView
-                    android:id="@+id/max_tmp_text"
+                    android:id="@+id/hourly_tmp_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/max_tmp_title"
+                    android:layout_toRightOf="@+id/hourly_tmp_title"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"/>
             </RelativeLayout>
@@ -132,7 +71,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/min_tmp_img"
+                    android:id="@+id/hourly_cond_img"
                     android:layout_alignParentLeft="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -140,18 +79,18 @@
                     android:src="@drawable/few_cloud_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
-                    android:id="@+id/min_tmp_title"
+                    android:id="@+id/hourly_cond_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/min_tmp_img"
-                    android:text="最低温度"
+                    android:layout_toRightOf="@id/hourly_cond_img"
+                    android:text="天气状况"
                     android:layout_marginLeft="5dp"/>
                 <TextView
-                    android:id="@+id/min_tmp_text"
+                    android:id="@+id/hourly_cond_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/min_tmp_title"
+                    android:layout_toRightOf="@+id/hourly_cond_title"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"/>
             </RelativeLayout>
@@ -165,7 +104,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/pop_img"
+                    android:id="@+id/hourly_pop_img"
                     android:layout_alignParentLeft="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -173,18 +112,18 @@
                     android:src="@drawable/drizzle_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
-                    android:id="@+id/pop_title"
+                    android:id="@+id/hourly_pop_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/pop_img"
+                    android:layout_toRightOf="@id/hourly_pop_img"
                     android:text="降水概率"
                     android:layout_marginLeft="5dp"/>
                 <TextView
-                    android:id="@+id/pop_text"
+                    android:id="@+id/hourly_pop_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/pop_title"
+                    android:layout_toRightOf="@+id/hourly_pop_title"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"/>
             </RelativeLayout>
@@ -193,7 +132,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/pcpn_img"
+                    android:id="@+id/hourly_hum_img"
                     android:layout_alignParentLeft="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -201,18 +140,18 @@
                     android:src="@drawable/drizzle_night"
                     android:layout_marginLeft="30dp"/>
                 <TextView
-                    android:id="@+id/pcpn_title"
+                    android:id="@+id/hourly_hum_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/pcpn_img"
-                    android:text="降水量"
+                    android:layout_toRightOf="@id/hourly_hum_img"
+                    android:text="相对湿度"
                     android:layout_marginLeft="5dp"/>
                 <TextView
-                    android:id="@+id/pcpn_text"
+                    android:id="@+id/hourly_hum_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/pcpn_title"
+                    android:layout_toRightOf="@+id/hourly_hum_title"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"/>
             </RelativeLayout>
@@ -226,7 +165,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/wind_dir_img"
+                    android:id="@+id/hourly_wind_dir_img"
                     android:layout_alignParentLeft="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -234,18 +173,18 @@
                     android:src="@drawable/wind_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
-                    android:id="@+id/wind_dir_title"
+                    android:id="@+id/hourly_wind_dir_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/wind_dir_img"
+                    android:layout_toRightOf="@id/hourly_wind_dir_img"
                     android:text="风向"
                     android:layout_marginLeft="5dp"/>
                 <TextView
-                    android:id="@+id/wind_dir_text"
+                    android:id="@+id/hourly_wind_dir_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/wind_dir_title"
+                    android:layout_toRightOf="@+id/hourly_wind_dir_title"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"/>
             </RelativeLayout>
@@ -254,7 +193,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/wind_sc_img"
+                    android:id="@+id/hourly_wind_sc_img"
                     android:layout_alignParentLeft="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -262,18 +201,18 @@
                     android:src="@drawable/wind_night"
                     android:layout_marginLeft="30dp"/>
                 <TextView
-                    android:id="@+id/wind_sc_title"
+                    android:id="@+id/hourly_wind_sc_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/wind_sc_img"
+                    android:layout_toRightOf="@id/hourly_wind_sc_img"
                     android:text="风力"
                     android:layout_marginLeft="5dp"/>
                 <TextView
-                    android:id="@+id/wind_sc_text"
+                    android:id="@+id/hourly_wind_sc_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/wind_sc_title"
+                    android:layout_toRightOf="@+id/hourly_wind_sc_title"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"/>
             </RelativeLayout>
@@ -288,7 +227,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/uv_index_img"
+                    android:id="@+id/hourly_dew_img"
                     android:layout_alignParentLeft="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -296,18 +235,18 @@
                     android:src="@drawable/sun_night"
                     android:layout_marginLeft="30dp"/>
                 <TextView
-                    android:id="@+id/uv_index_title"
+                    android:id="@+id/hourly_dew_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/uv_index_img"
-                    android:text="紫外线强度"
+                    android:layout_toRightOf="@id/hourly_dew_img"
+                    android:text="露点温度"
                     android:layout_marginLeft="5dp"/>
                 <TextView
-                    android:id="@+id/uv_index_text"
+                    android:id="@+id/hourly_dew_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/uv_index_title"
+                    android:layout_toRightOf="@+id/hourly_dew_title"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"/>
             </RelativeLayout>
@@ -316,7 +255,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/vis_img"
+                    android:id="@+id/hourly_cloud_img"
                     android:layout_alignParentLeft="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -324,18 +263,18 @@
                     android:src="@drawable/haze_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
-                    android:id="@+id/vis_title"
+                    android:id="@+id/hourly_cloud_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/vis_img"
-                    android:text="能见度"
+                    android:layout_toRightOf="@id/hourly_cloud_img"
+                    android:text="云量"
                     android:layout_marginLeft="5dp"/>
                 <TextView
-                    android:id="@+id/vis_text"
+                    android:id="@+id/hourly_cloud_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/vis_title"
+                    android:layout_toRightOf="@+id/hourly_cloud_title"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"/>
             </RelativeLayout>

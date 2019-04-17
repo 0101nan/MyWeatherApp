@@ -1,4 +1,4 @@
-package com.liyinan.myweather;
+package com.liyinan.myweather.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.github.mikephil.charting.utils.MPPointD;
+import com.liyinan.myweather.R;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;

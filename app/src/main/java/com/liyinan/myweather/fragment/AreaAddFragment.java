@@ -1,6 +1,5 @@
-package com.liyinan.myweather;
+package com.liyinan.myweather.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,23 +9,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.liyinan.myweather.SearchAdapter.ViewHolder;
-import com.liyinan.myweather.db.Area;
+import com.liyinan.myweather.R;
+import com.liyinan.myweather.adapter.SearchAdapter;
 import com.liyinan.myweather.gson.AreaBasic;
 import com.liyinan.myweather.gson.Location;
 import com.liyinan.myweather.util.HttpUtil;
 import com.liyinan.myweather.util.Utility;
-
-import org.litepal.LitePal;
 
 import java.io.IOException;
 import java.util.ArrayList;

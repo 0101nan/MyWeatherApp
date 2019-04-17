@@ -18,6 +18,9 @@ import com.liyinan.myweather.gson.Weather;
 import com.liyinan.myweather.util.Utility;
 import com.liyinan.myweather.view.WeatherPerHourView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.litepal.LitePalApplication.getContext;
@@ -92,9 +95,24 @@ public class WeatherPerHourAdapter extends RecyclerView.Adapter<WeatherPerHourAd
         holder.mWeatherPerHourView.setText(mHeight.get(position));
         holder.mTimeText.setText(mWeather.hourlyList.get(position).time.split(" ")[1]);
         holder.mWeatherText.setText(mWeather.hourlyList.get(position).cond_txt);
-        String weatherImg= Utility.weatherImgTitle(mWeather.hourlyList.get(position).cond_code,true);
-        int weatherId = getContext().getResources().getIdentifier(weatherImg, "drawable", getContext().getPackageName());
-        Glide.with(holder.itemView.getContext()).load(weatherId).into(holder.mWeatherImg);
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date date = sdf.parse(mWeather.hourlyList.get(position).time);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            if (calendar.get(Calendar.HOUR_OF_DAY) >= 20 || calendar.get(Calendar.HOUR_OF_DAY) <= 6) {
+                String weatherImg= Utility.weatherImgTitle(mWeather.hourlyList.get(position).cond_code,false);
+                int weatherId = getContext().getResources().getIdentifier(weatherImg, "drawable", getContext().getPackageName());
+                Glide.with(holder.itemView.getContext()).load(weatherId).into(holder.mWeatherImg);
+            }else{
+                String weatherImg= Utility.weatherImgTitle(mWeather.hourlyList.get(position).cond_code,true);
+                int weatherId = getContext().getResources().getIdentifier(weatherImg, "drawable", getContext().getPackageName());
+                Glide.with(holder.itemView.getContext()).load(weatherId).into(holder.mWeatherImg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

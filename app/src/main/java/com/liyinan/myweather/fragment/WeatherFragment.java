@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -88,6 +89,9 @@ public class WeatherFragment extends Fragment {
 
     private String lastWeatherUpdateTime;
     private String lastAqiUpdateTime;
+    private boolean isRefreshed=false;
+
+    private AQI mAQI;
 
     //由启动处创建附带地址的fragment
     public static WeatherFragment newInstance(String areaId){
@@ -137,7 +141,9 @@ public class WeatherFragment extends Fragment {
         mWeatherNowAqiCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                FragmentManager manager=getFragmentManager();
+                AQIStationDialogFragment aqiStationDialogFragment=AQIStationDialogFragment.newInstance(mAQI);
+                aqiStationDialogFragment.show(manager,null);
             }
         });
         mWeatherPerdayCardView.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +176,7 @@ public class WeatherFragment extends Fragment {
         }
         if(aqiString!=null){
             AQI aqi= Utility.handleAQIResponse(aqiString);
+            mAQI=aqi;
             showAQIInfo(aqi);
         }else{
 
@@ -185,8 +192,14 @@ public class WeatherFragment extends Fragment {
             public void onRefresh() {
                 requestWeather(mWeatherId);
                 requestAQI(mWeatherId);
+                if(isRefreshed){
                 Snackbar.make(view,"天气信息已更新",Snackbar.LENGTH_SHORT)
                         .show();
+                isRefreshed=false;
+                }else{
+                Snackbar.make(view,"已是最新的天气信息",Snackbar.LENGTH_SHORT)
+                        .show();
+                }
             }
         });
         return view;
@@ -220,6 +233,7 @@ public class WeatherFragment extends Fragment {
                         if(weather!=null && "ok".equals(weather.status)){
                             if(!lastWeatherUpdateTime.equals(weather.update.loc)){
                                 lastWeatherUpdateTime=weather.update.loc;
+                                isRefreshed=true;
                                 SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
                                 editor.putString("area_weather"+mWeatherId,responseText);
                                 editor.putString(LAST_WEATHER_UPDATE_TIME+mWeatherId,lastWeatherUpdateTime);
@@ -317,11 +331,13 @@ public class WeatherFragment extends Fragment {
                     public void run() {
                         if(aqi!=null && aqi.status.equals("ok")){
                             if(!lastAqiUpdateTime.equals(aqi.update.loc)){
+                                isRefreshed=true;
                                 lastAqiUpdateTime=aqi.update.loc;
                                 SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
                                 editor.putString("area_aqi"+mWeatherId,responseText);
                                 editor.putString(LAST_AQI_UPDATE_TIME+mWeatherId,lastAqiUpdateTime);
                                 editor.apply();
+                                mAQI=aqi;
                                 showAQIInfo(aqi);
                             }
                         }else{

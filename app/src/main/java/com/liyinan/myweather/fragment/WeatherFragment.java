@@ -1,5 +1,6 @@
 package com.liyinan.myweather.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
 import com.liyinan.myweather.adapter.WeatherPerHourAdapter;
+import com.liyinan.myweather.service.AutoUpdateService;
 import com.liyinan.myweather.view.AQIView;
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.gson.AQI;
@@ -132,13 +134,6 @@ public class WeatherFragment extends Fragment {
         mHourilForcastRecyclerView=view.findViewById(R.id.weather_perhour_recyclerview);
 
 
-        mWeatherNowCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         mWeatherNowAqiCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,12 +142,6 @@ public class WeatherFragment extends Fragment {
                     AQIStationDialogFragment aqiStationDialogFragment=AQIStationDialogFragment.newInstance(mAQI);
                     aqiStationDialogFragment.show(manager,null);
                 }
-            }
-        });
-        mWeatherPerdayCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 
@@ -260,6 +249,10 @@ public class WeatherFragment extends Fragment {
         String updateTime=weather.update.loc.split(" ")[1];
         String temperature=weather.now.tmp;
         String cond=weather.now.cond_txt;
+
+        //启动服务
+        Intent intent=new Intent(getActivity(),AutoUpdateService.class);
+        getActivity().startService(intent);
 
         //设置头图并保存图片地址
         String titleImg=Utility.getTitleImg(weather);

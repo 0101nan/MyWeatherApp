@@ -138,12 +138,15 @@ public class WeatherFragment extends Fragment {
 
             }
         });
+
         mWeatherNowAqiCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager manager=getFragmentManager();
-                AQIStationDialogFragment aqiStationDialogFragment=AQIStationDialogFragment.newInstance(mAQI);
-                aqiStationDialogFragment.show(manager,null);
+                if(mAQI.airStationList!=null){
+                    FragmentManager manager=getFragmentManager();
+                    AQIStationDialogFragment aqiStationDialogFragment=AQIStationDialogFragment.newInstance(mAQI);
+                    aqiStationDialogFragment.show(manager,null);
+                }
             }
         });
         mWeatherPerdayCardView.setOnClickListener(new View.OnClickListener() {

@@ -15,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +51,8 @@ import static java.lang.Integer.parseInt;
 public class WeatherFragment extends Fragment {
     private static final String ARG_AREA_ID="area_id";
     private static final String TAG = "WeatherFragment";
+    private static final String LAST_WEATHER_UPDATE_TIME="last_weather_update_time";
+    private static final String LAST_AQI_UPDATE_TIME="last_aqi_update_time";
 
     private ImageView titleImageView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -82,6 +86,8 @@ public class WeatherFragment extends Fragment {
     private List<Integer> mHourTmps;
     private WeatherPerHourAdapter mWeatherPerHourAdapter;
 
+    private String lastWeatherUpdateTime;
+    private String lastAqiUpdateTime;
 
     //由启动处创建附带地址的fragment
     public static WeatherFragment newInstance(String areaId){
@@ -122,7 +128,6 @@ public class WeatherFragment extends Fragment {
         mHourilForcastRecyclerView=view.findViewById(R.id.weather_perhour_recyclerview);
 
 
-
         mWeatherNowCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,18 +153,29 @@ public class WeatherFragment extends Fragment {
         SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
         String weatherString=preferences.getString("area_weather"+mWeatherId,null);
         String aqiString=preferences.getString("area_aqi"+mWeatherId,null);
+        lastWeatherUpdateTime=preferences.getString(LAST_WEATHER_UPDATE_TIME+mWeatherId,null);
+        lastAqiUpdateTime=preferences.getString(LAST_AQI_UPDATE_TIME+mWeatherId,null);
+        if(lastWeatherUpdateTime==null){
+            lastWeatherUpdateTime=new String();
+        }
+        if(lastAqiUpdateTime==null){
+            lastAqiUpdateTime=new String();
+        }
         if(weatherString!=null){
             Weather weather= Utility.handleWeatherResponse(weatherString);
             showWeatherInfo(weather);
         }else{
+
             requestWeather(mWeatherId);
         }
         if(aqiString!=null){
             AQI aqi= Utility.handleAQIResponse(aqiString);
             showAQIInfo(aqi);
         }else{
+
             requestAQI(mWeatherId);
         }
+
 
 
         //刷新天气
@@ -202,11 +218,15 @@ public class WeatherFragment extends Fragment {
                     @Override
                     public void run() {
                         if(weather!=null && "ok".equals(weather.status)){
-                            SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-                            editor.putString("area_weather"+mWeatherId,responseText);
-                            editor.apply();
-                            mWeatherId=weather.basic.cid;
-                            showWeatherInfo(weather);
+                            if(!lastWeatherUpdateTime.equals(weather.update.loc)){
+                                lastWeatherUpdateTime=weather.update.loc;
+                                SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+                                editor.putString("area_weather"+mWeatherId,responseText);
+                                editor.putString(LAST_WEATHER_UPDATE_TIME+mWeatherId,lastWeatherUpdateTime);
+                                editor.apply();
+                                mWeatherId=weather.basic.cid;
+                                showWeatherInfo(weather);
+                            }
                         }else{
                             Toast.makeText(getContext(), "获取天气信息失败 ", Toast.LENGTH_SHORT).show();
                         }
@@ -253,7 +273,9 @@ public class WeatherFragment extends Fragment {
             mlows[i]=mLows.get(i);
         }
 
+        LayoutAnimationController controller= AnimationUtils.loadLayoutAnimation(getContext(),R.anim.layout_animation_slide_right);
         mDailyForcastAdapter=new DiagramAdapter(mheights,mlows,1,weather,getFragmentManager());
+        mDailyForcastRecyclerView.setLayoutAnimation(controller);
         mDailyForcastRecyclerView.setAdapter(mDailyForcastAdapter);
         LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         mDailyForcastRecyclerView.setLayoutManager(manager);
@@ -294,10 +316,14 @@ public class WeatherFragment extends Fragment {
                     @Override
                     public void run() {
                         if(aqi!=null && aqi.status.equals("ok")){
-                            SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-                            editor.putString("area_aqi"+mWeatherId,responseText);
-                            editor.apply();
-                            showAQIInfo(aqi);
+                            if(!lastAqiUpdateTime.equals(aqi.update.loc)){
+                                lastAqiUpdateTime=aqi.update.loc;
+                                SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+                                editor.putString("area_aqi"+mWeatherId,responseText);
+                                editor.putString(LAST_AQI_UPDATE_TIME+mWeatherId,lastAqiUpdateTime);
+                                editor.apply();
+                                showAQIInfo(aqi);
+                            }
                         }else{
                             Toast.makeText(getContext(), "获取空气信息失败 ", Toast.LENGTH_SHORT).show();
                         }

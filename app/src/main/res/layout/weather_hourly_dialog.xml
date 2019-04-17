@@ -14,26 +14,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/hourly_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:text="小时详情"
-                android:textSize="20sp"/>
-            <TextView
-                android:id="@+id/hourly_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/hourly_title"
-                android:layout_alignBottom="@id/hourly_title"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"/>
-        </RelativeLayout>
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/hourly_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="15dp"
+                    android:text="小时详情"
+                    android:textSize="20sp"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/hourly_time_img"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_time"
+                    android:layout_marginLeft="30dp"
+                    android:layout_alignParentBottom="true"/>
+                <TextView
+                    android:id="@+id/hourly_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/hourly_time_img"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignParentBottom="true"/>
+            </RelativeLayout>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -48,7 +65,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/sun_day"
+                    android:src="@drawable/icon_tmp_max"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/hourly_tmp_title"
@@ -76,7 +93,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/few_cloud_day"
+                    android:src="@drawable/icon_day"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/hourly_cond_title"
@@ -109,7 +126,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/drizzle_day"
+                    android:src="@drawable/icon_pop"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/hourly_pop_title"
@@ -137,7 +154,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/drizzle_night"
+                    android:src="@drawable/icon_dew"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/hourly_hum_title"
@@ -170,7 +187,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/wind_day"
+                    android:src="@drawable/icon_wind_dir"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/hourly_wind_dir_title"
@@ -198,7 +215,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/wind_night"
+                    android:src="@drawable/icon_wind_sc"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/hourly_wind_sc_title"
@@ -232,7 +249,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/sun_night"
+                    android:src="@drawable/icon_pcpn"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/hourly_dew_title"
@@ -260,7 +277,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/haze_day"
+                    android:src="@drawable/icon_cloud"
                     android:layout_marginLeft="30dp"/>
                 <TextView
                     android:id="@+id/hourly_cloud_title"

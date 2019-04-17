@@ -35,12 +35,16 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
         TextView mDateText;
         ImageView mDayImg;
         ImageView mNightImg;
+        TextView mDayText;
+        TextView mNightText;
         public ViewHolder(View itemView){
             super(itemView);
             mDiagramView=itemView.findViewById(R.id.dv);
             mDateText=itemView.findViewById(R.id.weather_perday_date);
             mDayImg=itemView.findViewById(R.id.weather_perday_imgd);
             mNightImg=itemView.findViewById(R.id.weather_perday_imgn);
+            mDayText=itemView.findViewById(R.id.weather_perday_day_text);
+            mNightText=itemView.findViewById(R.id.weather_perday_night_text);
         }
     }
 
@@ -137,7 +141,9 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
             }
         }
         holder.mDiagramView.setText(mHeight[position],mLows[position]);
-        holder.mDateText.setText(mWeather.dailyForecastList.get(position).date.split("-")[2]);
+        holder.mDateText.setText(mWeather.dailyForecastList.get(position).date.split("-")[2]+"日");
+        holder.mDayText.setText(mWeather.dailyForecastList.get(position).cond_txt_d);
+        holder.mNightText.setText(mWeather.dailyForecastList.get(position).cond_txt_n);
         String dayImg= Utility.weatherImgTitle(mWeather.dailyForecastList.get(position).cond_code_d,true);
         String nightImg=Utility.weatherImgTitle(mWeather.dailyForecastList.get(position).cond_code_n,false);
         int dayId = getContext().getResources().getIdentifier(dayImg, "drawable", getContext().getPackageName());

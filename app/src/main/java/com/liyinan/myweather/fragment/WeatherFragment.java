@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -85,7 +87,6 @@ public class WeatherFragment extends Fragment {
     public static WeatherFragment newInstance(String areaId){
         Bundle args=new Bundle();
         args.putString(ARG_AREA_ID,areaId);
-
         WeatherFragment weatherFragment=new WeatherFragment();
         weatherFragment.setArguments(args);
         return weatherFragment;
@@ -168,7 +169,8 @@ public class WeatherFragment extends Fragment {
             public void onRefresh() {
                 requestWeather(mWeatherId);
                 requestAQI(mWeatherId);
-                mDailyForcastAdapter.notifyDataSetChanged();
+                Snackbar.make(view,"天气信息已更新",Snackbar.LENGTH_SHORT)
+                        .show();
             }
         });
         return view;

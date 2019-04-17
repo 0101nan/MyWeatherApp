@@ -28,12 +28,12 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView areaNameTextView;
         View areaView;
-        ImageView titleImg;
+        ImageView areaTitleImg;
         public ViewHolder(View view){
             super(view);
             areaView=view;
             areaNameTextView=view.findViewById(R.id.area_name);
-            titleImg=view.findViewById(R.id.area_item_title_img);
+            areaTitleImg=view.findViewById(R.id.area_item_title_img);
         }
 
     }
@@ -68,9 +68,9 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
         SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(holder.areaView.getContext());
         int resID=preferences.getInt("area_titleImg"+mArea.getAreaCode(),0);
         if(resID==0) {
-            Glide.with(holder.areaView.getContext()).load(R.drawable.title_img_1_0).into(holder.titleImg);
+            Glide.with(holder.areaView.getContext()).load(R.drawable.title_img_1_0).into(holder.areaTitleImg);
         }else{
-            Glide.with(holder.areaView.getContext()).load(resID).into(holder.titleImg);
+            Glide.with(holder.areaView.getContext()).load(resID).into(holder.areaTitleImg);
         }
 
     }

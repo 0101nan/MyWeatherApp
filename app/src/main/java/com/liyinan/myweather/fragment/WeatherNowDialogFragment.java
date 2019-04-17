@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.gson.Weather;
 
-import org.w3c.dom.Text;
-
 public class WeatherNowDialogFragment extends DialogFragment {
     private static final String POSITION="position";
     private static final String WEATHER="weather";
@@ -44,7 +42,7 @@ public class WeatherNowDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View v= LayoutInflater.from(getActivity()).inflate(R.layout.weather_now,null);
+        View v= LayoutInflater.from(getActivity()).inflate(R.layout.weather_daily_dialog,null);
         Weather weather=(Weather)getArguments().getSerializable(WEATHER);
         Integer position=getArguments().getInt(POSITION);
 

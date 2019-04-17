@@ -55,7 +55,7 @@ public class WeatherHourlyDialogFragment extends DialogFragment {
         hourlyDewText=v.findViewById(R.id.hourly_dew_text);
         hourlyCloudText=v.findViewById(R.id.hourly_cloud_text);
 
-        hourlyTime.setText(weather.hourlyList.get(position).time);
+        hourlyTime.setText(weather.hourlyList.get(position).time.split(" ")[1]);
         hourlyTmpText.setText(weather.hourlyList.get(position).tmp+"℃");
         hourlyCondText.setText(weather.hourlyList.get(position).cond_txt);
         hourlyPopText.setText(weather.hourlyList.get(position).pop+"%");

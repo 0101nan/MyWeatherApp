@@ -200,7 +200,7 @@ public class WeatherFragment extends Fragment {
     //获取天气信息
     public void requestWeather(String weatherId) {
         //设置api地址
-        String weatherUrl="https://api.heweather.net/s6/weather?location="+weatherId+"&key=ab4bb0964d4d4b3894f8cdaf1b79302c";
+        String weatherUrl="https://api.heweather.net/s6/weather?location="+weatherId+"&key=4477c8824b5f44da84a872578614bdc2";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -249,10 +249,6 @@ public class WeatherFragment extends Fragment {
         String updateTime=weather.update.loc.split(" ")[1];
         String temperature=weather.now.tmp;
         String cond=weather.now.cond_txt;
-
-        //启动服务
-        Intent intent=new Intent(getActivity(),AutoUpdateService.class);
-        getActivity().startService(intent);
 
         //设置头图并保存图片地址
         String titleImg=Utility.getTitleImg(weather);
@@ -304,7 +300,7 @@ public class WeatherFragment extends Fragment {
     }
     //获取空气质量
     public void requestAQI(final String weatherId){
-        String aqiUrl="https://api.heweather.net/s6/air?location="+weatherId+"&key=ab4bb0964d4d4b3894f8cdaf1b79302c";
+        String aqiUrl="https://api.heweather.net/s6/air?location="+weatherId+"&key=4477c8824b5f44da84a872578614bdc2";
         HttpUtil.sendOkHttpRequest(aqiUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

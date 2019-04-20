@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.RectF;
 import android.graphics.SweepGradient;
+import android.support.annotation.IntRange;
+import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,8 +17,6 @@ import android.view.View;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.liyinan.myweather.R;
 
-import androidx.annotation.IntRange;
-import androidx.annotation.Nullable;
 
 public class AQIView extends View {
     private int progressStartColor;

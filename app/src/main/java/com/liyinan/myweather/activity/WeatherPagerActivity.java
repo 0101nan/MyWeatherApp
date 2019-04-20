@@ -1,5 +1,6 @@
 package com.liyinan.myweather.activity;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import android.view.View;
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.fragment.WeatherFragment;
 import com.liyinan.myweather.gson.Area1;
+import com.liyinan.myweather.service.AutoUpdateService;
 import com.liyinan.myweather.util.ActivityCollector;
 import com.liyinan.myweather.util.Utility;
 
@@ -128,6 +130,15 @@ public class WeatherPagerActivity extends AppCompatActivity {
                 });
 
         mIndicator.setViewPager(mViewPager);
+
+        //启动服务
+        ActivityManager activityManager=(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> infos=activityManager.getRunningServices(Integer.MAX_VALUE);
+        if(infos==null||infos.size()==0){
+            Intent intent=new Intent(this, AutoUpdateService.class);
+            startService(intent);
+        }
+
     }
 
     public static Intent newIntent(Context packageContext, String areaId){

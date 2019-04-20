@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.liyinan.myweather.db.Area;
 import com.liyinan.myweather.gson.AQI;
@@ -23,6 +24,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static android.support.constraint.Constraints.TAG;
+
 public class AutoUpdateService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
@@ -32,6 +35,7 @@ public class AutoUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateWeather();
+        Log.d(TAG, "onStartCommand: 运行后台服务一次》》》》》》》》》》》》》》");
         AlarmManager manager=(AlarmManager)getSystemService(ALARM_SERVICE);
         int anHour=60*60*1000;
         long triggerAtTime= SystemClock.elapsedRealtime()+anHour;
@@ -45,10 +49,11 @@ public class AutoUpdateService extends Service {
     private void updateWeather(){
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         String jsonAreaList=prefs.getString("areaList",null);
+        Log.d(TAG, "updateWeather: "+jsonAreaList);
         if(jsonAreaList!=null){
             List<Area1> mArea1List= Utility.handleAreaList(jsonAreaList);
             for (Area1 area1:mArea1List){
-                String weatherUrl="https://api.heweather.net/s6/weather?location="+area1.getAreaCode()+"&key=ab4bb0964d4d4b3894f8cdaf1b79302c";
+                String weatherUrl="https://api.heweather.net/s6/weather?location="+area1.getAreaCode()+"&key=4477c8824b5f44da84a872578614bdc2";
                 HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -57,16 +62,17 @@ public class AutoUpdateService extends Service {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        String responseText=response.body().toString();
+                        String responseText=response.body().string();
                         Weather weather=Utility.handleWeatherResponse(responseText);
                         if(weather!=null&&"ok".equals(weather.status)){
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
                             editor.putString("area_weather"+area1.getAreaCode(),responseText);
                             editor.apply();
+                            Log.d(TAG, "onResponse: 更新天气"+area1.getAreaName());
                         }
                     }
                 });
-                String aqiUrl="https://api.heweather.net/s6/air?location="+area1.getAreaCode()+"&key=ab4bb0964d4d4b3894f8cdaf1b79302c";
+                String aqiUrl="https://api.heweather.net/s6/air?location="+area1.getAreaCode()+"&key=4477c8824b5f44da84a872578614bdc2";
                 HttpUtil.sendOkHttpRequest(aqiUrl, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -75,7 +81,7 @@ public class AutoUpdateService extends Service {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        String responseText=response.body().toString();
+                        String responseText=response.body().string();
                         AQI aqi=Utility.handleAQIResponse(responseText);
                         if(aqi!=null&&aqi.status.equals("ok")){
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();

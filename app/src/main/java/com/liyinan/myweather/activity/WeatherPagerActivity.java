@@ -131,6 +131,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
 
         mIndicator.setViewPager(mViewPager);
 
+        /*
         //启动服务
         ActivityManager activityManager=(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningServiceInfo> infos=activityManager.getRunningServices(Integer.MAX_VALUE);
@@ -138,6 +139,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
             Intent intent=new Intent(this, AutoUpdateService.class);
             startService(intent);
         }
+        */
 
     }
 

@@ -1,6 +1,7 @@
 package com.liyinan.myweather.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.liyinan.myweather.R;
+import com.liyinan.myweather.activity.WeatherPagerActivity;
 import com.liyinan.myweather.gson.Area1;
 import com.liyinan.myweather.gson.AreaBasic;
 import com.liyinan.myweather.util.Utility;
@@ -67,7 +69,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 editor.putString("areaList",gson.toJson(area1List));
                 editor.apply();
 
-                mAreaActivity.onBackPressed();
+                Intent intent= WeatherPagerActivity.newIntent(v.getContext(),areaBasic.cid);
+                v.getContext().startActivity(intent);
             }
         });
         return holder;

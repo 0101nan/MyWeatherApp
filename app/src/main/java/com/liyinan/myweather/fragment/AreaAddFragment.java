@@ -30,10 +30,18 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class AreaAddFragment extends Fragment {
-    private EditText mEditText;
+    private static final String ARG_INPUT_TEXT="input_text";
     private List<AreaBasic> mSearchResultList=new ArrayList<>();
     private RecyclerView mRecyclerView;
     private SearchAdapter mAreaAdapter;
+
+    public static Fragment newInstance(String input){
+        Bundle args=new Bundle();
+        args.putString(ARG_INPUT_TEXT,input);
+        AreaAddFragment areaAddFragment=new AreaAddFragment();
+        areaAddFragment.setArguments(args);
+        return areaAddFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,28 +52,8 @@ public class AreaAddFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_add_area,container,false);
-
-        //响应输入框
-        mEditText=view.findViewById(R.id.search_area_edit_text);
-        mEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()>0) {
-                    requestArea(s);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
+        String input=getArguments().getString(ARG_INPUT_TEXT);
+        requestArea(input);
         //设置列表
         mRecyclerView=view.findViewById(R.id.search_area_recyeler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

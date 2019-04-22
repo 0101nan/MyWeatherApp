@@ -32,7 +32,7 @@ public class UpdateJobService extends JobService {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //updateWeather();
+                updateWeather();
                 WeatherPagerActivity.startService(context);
                 jobFinished(params,false);
             }

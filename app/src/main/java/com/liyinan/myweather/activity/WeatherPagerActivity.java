@@ -158,7 +158,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
         mJobScheduler=(JobScheduler)context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         JobInfo.Builder builder=new JobInfo.Builder(JOB_ID,new ComponentName(context,UpdateJobService.class));
         builder.setMinimumLatency(1000*60*60);
-        builder.setOverrideDeadline(1000*60*30);
+        builder.setOverrideDeadline(1000*60*90);
         mJobScheduler.schedule(builder.build());
     }
 

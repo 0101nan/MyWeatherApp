@@ -79,7 +79,7 @@ public class AreaAddFragment extends Fragment {
 
     //请求搜索结果
     private void requestArea(final CharSequence inputText){
-        String searchUrl="https://search.heweather.net/find?location="+inputText.toString()+"&key=ab4bb0964d4d4b3894f8cdaf1b79302c&group=cn";
+        String searchUrl="https://search.heweather.net/find?location="+inputText.toString()+"&key=4477c8824b5f44da84a872578614bdc2&group=cn";
         HttpUtil.sendOkHttpRequest(searchUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
+import com.liyinan.myweather.activity.WeatherPagerActivity;
 import com.liyinan.myweather.adapter.WeatherPerHourAdapter;
 import com.liyinan.myweather.service.AutoUpdateService;
 import com.liyinan.myweather.view.AQIView;
@@ -199,6 +200,9 @@ public class WeatherFragment extends Fragment {
 
     //获取天气信息
     public void requestWeather(String weatherId) {
+        //启动服务
+        WeatherPagerActivity.startService(getContext());
+
         //设置api地址
         String weatherUrl="https://api.heweather.net/s6/weather?location="+weatherId+"&key=4477c8824b5f44da84a872578614bdc2";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {

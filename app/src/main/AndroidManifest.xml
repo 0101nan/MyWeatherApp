@@ -14,9 +14,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <service
-            android:name=".service.AutoUpdateService"
-            android:enabled="true"
-            android:exported="true"></service>
+            android:name=".service.UpdateJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <activity android:name=".activity.WeatherPagerActivity">
             <intent-filter>

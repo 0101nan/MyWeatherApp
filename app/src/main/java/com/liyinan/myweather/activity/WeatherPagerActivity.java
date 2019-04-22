@@ -1,6 +1,10 @@
 package com.liyinan.myweather.activity;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,12 +24,14 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.fragment.WeatherFragment;
 import com.liyinan.myweather.gson.Area1;
 import com.liyinan.myweather.service.AutoUpdateService;
+import com.liyinan.myweather.service.UpdateJobService;
 import com.liyinan.myweather.util.ActivityCollector;
 import com.liyinan.myweather.util.Utility;
 
@@ -35,13 +41,18 @@ import java.util.List;
 import me.relex.circleindicator.CircleIndicator;
 
 public class WeatherPagerActivity extends AppCompatActivity {
+    private static final String TAG = "WeatherPagerActivity";
     private static final String EXTRA_AREA_ID="com.liyinan.myweather.area_id";
+    private static JobScheduler mJobScheduler;
+    private static int JOB_ID=0;
 
     private ViewPager mViewPager;
     private List<Area1> mAreas=new ArrayList<>();
     private CoordinatorLayout mCoordinatorLayout;
     private FloatingActionButton floatingActionButton;
     private CircleIndicator mIndicator;
+    //private JobScheduler mJobScheduler=null;
+    //int JOB_ID=0;
 
 
     @Override
@@ -131,22 +142,24 @@ public class WeatherPagerActivity extends AppCompatActivity {
 
         mIndicator.setViewPager(mViewPager);
 
-        /*
-        //启动服务
-        ActivityManager activityManager=(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> infos=activityManager.getRunningServices(Integer.MAX_VALUE);
-        if(infos==null||infos.size()==0){
-            Intent intent=new Intent(this, AutoUpdateService.class);
-            startService(intent);
-        }
-        */
-
     }
 
     public static Intent newIntent(Context packageContext, String areaId){
         Intent intent=new Intent(packageContext,WeatherPagerActivity.class);
         intent.putExtra(EXTRA_AREA_ID,areaId);
         return intent;
+    }
+
+    public static void startService(Context context){
+        Log.d(TAG, "startService: jobstart???????????????????????????");
+        if(mJobScheduler!=null){
+            mJobScheduler.cancel(JOB_ID);
+        }
+        mJobScheduler=(JobScheduler)context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        JobInfo.Builder builder=new JobInfo.Builder(JOB_ID,new ComponentName(context,UpdateJobService.class));
+        builder.setMinimumLatency(1000*60*60);
+        builder.setOverrideDeadline(1000*60*30);
+        mJobScheduler.schedule(builder.build());
     }
 
     //按两次退出程序

@@ -99,14 +99,7 @@ public class AQIView extends View {
             postInvalidate();
         }
     }
-    /*
-    private void drawProgress(Canvas canvas){
-        for(int i=0,end=(int)(curProgress*unitAngle);i<=end;i++){
-            progressPaint.setColor(getGradient(i/(float)end,progressStartColor,progressEndColor));
-            canvas.drawArc(pRectF,startAngle+i,1,false,progressPaint);
-        }
-    }
-    */
+
     private void drawProgress(Canvas canvas) {
         float halfSweep = sweepAngle / 2;
         for (int i = 0, end = (int) (curProgress * unitAngle); i <end; i++) {
@@ -188,6 +181,4 @@ public class AQIView extends View {
         int greenCurrent = (int) (greenStart + fraction * greenDifference);
         return Color.argb(alphaCurrent, redCurrent, greenCurrent, blueCurrent);
     }
-
-
 }

@@ -5,6 +5,7 @@ import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -29,12 +30,20 @@ public class UpdateJobService extends JobService {
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "onStartJob: 服务运行》》》》》》》》》》》》》");
         Context context=this;
-        new Thread(new Runnable() {
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 updateWeather();
                 WeatherPagerActivity.startService(context);
                 jobFinished(params,false);
+            }
+        },1);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
             }
         }).start();
         return true;

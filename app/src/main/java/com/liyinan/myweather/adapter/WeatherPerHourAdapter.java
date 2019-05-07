@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.liyinan.myweather.fragment.WeatherHourlyDialogFragment;
-import com.liyinan.myweather.view.DiagramView;
 import com.liyinan.myweather.R;
-import com.liyinan.myweather.fragment.WeatherNowDialogFragment;
 import com.liyinan.myweather.gson.Weather;
 import com.liyinan.myweather.util.Utility;
 import com.liyinan.myweather.view.WeatherPerHourView;

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.liyinan.myweather.view.DiagramView;
+import com.liyinan.myweather.view.WeatherPerDay;
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.fragment.WeatherNowDialogFragment;
 import com.liyinan.myweather.gson.Weather;
@@ -18,7 +18,7 @@ import com.liyinan.myweather.util.Utility;
 
 import static org.litepal.LitePalApplication.getContext;
 
-public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHolder> {
+public class WeatherPerDayAdapter extends RecyclerView.Adapter<WeatherPerDayAdapter.ViewHolder> {
     private  int[] mHeight;
     private  int[] mLows;
     private final int HOURTYPE=0;
@@ -31,7 +31,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
     private FragmentManager mManager;
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        DiagramView mDiagramView;
+        WeatherPerDay mWeatherPerDay;
         TextView mDateText;
         ImageView mDayImg;
         ImageView mNightImg;
@@ -39,7 +39,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
         TextView mNightText;
         public ViewHolder(View itemView){
             super(itemView);
-            mDiagramView=itemView.findViewById(R.id.dv);
+            mWeatherPerDay =itemView.findViewById(R.id.dv);
             mDateText=itemView.findViewById(R.id.weather_perday_date);
             mDayImg=itemView.findViewById(R.id.weather_perday_imgd);
             mNightImg=itemView.findViewById(R.id.weather_perday_imgn);
@@ -48,7 +48,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
         }
     }
 
-    public DiagramAdapter(int[] height, int[] low, int type,Weather weather,FragmentManager manager){
+    public WeatherPerDayAdapter(int[] height, int[] low, int type, Weather weather, FragmentManager manager){
         mHeight=height;
         mLows=low;
         mType=type;
@@ -105,42 +105,42 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DiagramAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WeatherPerDayAdapter.ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         int prePosition=position-1;
         int nextPosition=position+1;
         if(mType== HOURTYPE){
             switch(position) {
                 case 0:
-                    holder.mDiagramView.draws(times * mHeight[position], times * mLows[position], times * mHeight[nextPosition], times * mLows[nextPosition], 0,mMax,mMin);
+                    holder.mWeatherPerDay.draws(times * mHeight[position], times * mLows[position], times * mHeight[nextPosition], times * mLows[nextPosition], 0,mMax,mMin);
                     //holder.itemView.setBackgroundResource(R.drawable.drawableBackground);
                     break;
                 case 23:
-                    holder.mDiagramView.draws(times * mHeight[prePosition], times * mLows[prePosition], times * mHeight[position], times * mLows[position], 2, true,mMax,mMin);
+                    holder.mWeatherPerDay.draws(times * mHeight[prePosition], times * mLows[prePosition], times * mHeight[position], times * mLows[position], 2, true,mMax,mMin);
 
                     break;
                 default:
-                    holder.mDiagramView.draws(times * mHeight[prePosition], times * mLows[prePosition], times * mHeight[position], times * mLows[position], times * mHeight[nextPosition], times * mLows[nextPosition], 1,mMax,mMin);
+                    holder.mWeatherPerDay.draws(times * mHeight[prePosition], times * mLows[prePosition], times * mHeight[position], times * mLows[position], times * mHeight[nextPosition], times * mLows[nextPosition], 1,mMax,mMin);
 
                     break;
             }
         }else if (mType==DAYTYPE){
                 switch(position){
                     case 0:
-                        holder.mDiagramView.draws(times*mHeight[position], times*mLows[position], times*mHeight[nextPosition], times*mLows[nextPosition], 0,mMax,mMin);
+                        holder.mWeatherPerDay.draws(times*mHeight[position], times*mLows[position], times*mHeight[nextPosition], times*mLows[nextPosition], 0,mMax,mMin);
                         //holder.itemView.setBackgroundResource(R.drawable.drawableBackground);
                         break;
                     case 6:
-                        holder.mDiagramView.draws(times*mHeight[prePosition], times*mLows[prePosition], times*mHeight[position], times*mLows[position], 2, true,mMax,mMin);
+                        holder.mWeatherPerDay.draws(times*mHeight[prePosition], times*mLows[prePosition], times*mHeight[position], times*mLows[position], 2, true,mMax,mMin);
 
                         break;
                     default:
-                        holder.mDiagramView.draws(times*mHeight[prePosition],times* mLows[prePosition],times* mHeight[position],times* mLows[position], times*mHeight[nextPosition], times*mLows[nextPosition], 1,mMax,mMin);
+                        holder.mWeatherPerDay.draws(times*mHeight[prePosition],times* mLows[prePosition],times* mHeight[position],times* mLows[position], times*mHeight[nextPosition], times*mLows[nextPosition], 1,mMax,mMin);
 
                         break;
             }
         }
-        holder.mDiagramView.setText(mHeight[position],mLows[position]);
+        holder.mWeatherPerDay.setText(mHeight[position],mLows[position]);
         holder.mDateText.setText(mWeather.dailyForecastList.get(position).date.split("-")[2]+"日");
         holder.mDayText.setText(mWeather.dailyForecastList.get(position).cond_txt_d);
         holder.mNightText.setText(mWeather.dailyForecastList.get(position).cond_txt_n);

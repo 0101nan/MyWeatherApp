@@ -1,12 +1,10 @@
 package com.liyinan.myweather.fragment;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,30 +15,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.github.mikephil.charting.charts.LineChart;
 import com.liyinan.myweather.activity.WeatherPagerActivity;
 import com.liyinan.myweather.adapter.WeatherPerHourAdapter;
-import com.liyinan.myweather.service.AutoUpdateService;
 import com.liyinan.myweather.view.AQIView;
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.gson.AQI;
 import com.liyinan.myweather.gson.Daily;
 import com.liyinan.myweather.gson.Hourly;
 import com.liyinan.myweather.gson.Weather;
-import com.liyinan.myweather.adapter.DiagramAdapter;
+import com.liyinan.myweather.adapter.WeatherPerDayAdapter;
 import com.liyinan.myweather.util.HttpUtil;
-import com.liyinan.myweather.util.LineChartUtil;
 import com.liyinan.myweather.util.Utility;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,7 +74,7 @@ public class WeatherFragment extends Fragment {
     private RecyclerView mDailyForcastRecyclerView;
     private List<Integer> mHeights;
     private List<Integer> mLows;
-    private DiagramAdapter mDailyForcastAdapter;
+    private WeatherPerDayAdapter mDailyForcastAdapter;
 
     private RecyclerView mHourilForcastRecyclerView;
     private List<Integer> mHourTmps;
@@ -284,7 +274,7 @@ public class WeatherFragment extends Fragment {
         }
 
         //LayoutAnimationController controller= AnimationUtils.loadLayoutAnimation(getContext(),R.anim.layout_animation_slide_right);
-        mDailyForcastAdapter=new DiagramAdapter(mheights,mlows,1,weather,getFragmentManager());
+        mDailyForcastAdapter=new WeatherPerDayAdapter(mheights,mlows,1,weather,getFragmentManager());
         //mDailyForcastRecyclerView.setLayoutAnimation(controller);
         mDailyForcastRecyclerView.setAdapter(mDailyForcastAdapter);
         LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);

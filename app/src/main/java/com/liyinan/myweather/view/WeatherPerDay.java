@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.liyinan.myweather.R;
 
-public class DiagramView extends View {
+public class WeatherPerDay extends View {
     private Paint mPaint;
     private TextPaint mTextPaint;
     private Path mPath;
@@ -46,19 +46,18 @@ public class DiagramView extends View {
 
     private static final String TAG="DiagramView";
 
-    public DiagramView(Context context) {
+    public WeatherPerDay(Context context) {
         super(context);
         init();
     }
 
-    public DiagramView(Context context, @Nullable AttributeSet attrs) {
+    public WeatherPerDay(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public DiagramView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public WeatherPerDay(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        //setWillNotDraw(false);
         init();
     }
 
@@ -98,8 +97,9 @@ public class DiagramView extends View {
         super.onDraw(canvas);
 
         caculateY(mHeight,mMaxNum,mMinNum);
-
+        mPaint.setColor(getResources().getColor(R.color.orange));
         canvas.drawCircle(mWidth/2,mCaculatedHeightY,4,mPaint);
+        mPaint.setColor(getResources().getColor(R.color.gray));
         canvas.drawCircle(mWidth/2,mCaculatedLowY,4,mPaint);
 
         canvas.drawText(mHeightText,mWidth/2-mTextPaint.getTextSize()/2,mCaculatedHeightY-mTextPaint.getTextSize(),mTextPaint);
@@ -107,38 +107,47 @@ public class DiagramView extends View {
 
         switch (mItemType){
             case sFIRSTITEM:
+                mPath.reset();
                 mPath.moveTo(mWidth/2,mCaculatedHeightY);
                 mPath.lineTo(mWidth,(mCaculatedHeightY+mCaculatedNextHeightY)/2);
-
+                mPaint.setColor(getResources().getColor(R.color.orange));
+                canvas.drawPath(mPath,mPaint);
+                mPath.reset();
                 mPath.moveTo(mWidth/2,mCaculatedLowY);
                 mPath.lineTo(mWidth,(mCaculatedLowY+mCaculatedNextLowY)/2);
-
+                mPaint.setColor(getResources().getColor(R.color.gray));
+                canvas.drawPath(mPath,mPaint);
                 break;
             case sMIDITEM:
+                mPath.reset();
                 mPath.moveTo(0,(mCaculatedPreHeightY+mCaculatedHeightY)/2);
                 mPath.lineTo(mWidth/2,mCaculatedHeightY);
-
-                mPath.moveTo(0,(mCaculatedPreLowY+mCaculatedLowY)/2);
-                mPath.lineTo(mWidth/2,mCaculatedLowY);
-
                 mPath.moveTo(mWidth/2,mCaculatedHeightY);
                 mPath.lineTo(mWidth,(mCaculatedHeightY+mCaculatedNextHeightY)/2);
-
-                mPath.moveTo(mWidth/2,mCaculatedLowY);
-                mPath.lineTo(mWidth,(mCaculatedLowY+mCaculatedNextLowY)/2);
-
-                break;
-            case sLASTITEM:
-                mPath.moveTo(0,(mCaculatedPreHeightY+mCaculatedHeightY)/2);
-                mPath.lineTo(mWidth/2,mCaculatedHeightY);
-
+                mPaint.setColor(getResources().getColor(R.color.orange));
+                canvas.drawPath(mPath,mPaint);
+                mPath.reset();
                 mPath.moveTo(0,(mCaculatedPreLowY+mCaculatedLowY)/2);
                 mPath.lineTo(mWidth/2,mCaculatedLowY);
-
+                                mPath.moveTo(mWidth/2,mCaculatedLowY);
+                mPath.lineTo(mWidth,(mCaculatedLowY+mCaculatedNextLowY)/2);
+                mPaint.setColor(getResources().getColor(R.color.gray));
+                canvas.drawPath(mPath,mPaint);
+                break;
+            case sLASTITEM:
+                mPath.reset();
+                mPath.moveTo(0,(mCaculatedPreHeightY+mCaculatedHeightY)/2);
+                mPath.lineTo(mWidth/2,mCaculatedHeightY);
+                mPaint.setColor(getResources().getColor(R.color.orange));
+                canvas.drawPath(mPath,mPaint);
+                mPath.reset();
+                mPath.moveTo(0,(mCaculatedPreLowY+mCaculatedLowY)/2);
+                mPath.lineTo(mWidth/2,mCaculatedLowY);
+                mPaint.setColor(getResources().getColor(R.color.gray));
+                canvas.drawPath(mPath,mPaint);
                 break;
                 default:break;
         }
-        canvas.drawPath(mPath,mPaint);
     }
 
     public void draws(int preHeightY,int preLowY,int heightY,int lowY,int itemType,boolean last,int max,int min){
@@ -185,14 +194,6 @@ public class DiagramView extends View {
     }
 
     private void caculateY(int height,int maxNum,int minNum) {
-        /*
-        mCaculatedNextHeightY = height/2+height/8-mNextHeightY;
-        mCaculatedNextLowY = height/2+height/4+height/8-mNextLowY;
-        mCaculatedHeightY = height/2+height/8-mHeightY;
-        mCaculatedLowY=height/2+height/4+height/8-mLowY;
-        mCaculatedPreHeightY=height/2+height/8-mPreHeightY;
-        mCaculatedPreLowY=height/2+height/4+height/8-mPreLowY;
-        */
         float k=(2*(int)(mTextPaint.getTextSize()*2+0.5)-mHeight)/(maxNum-minNum);
         float b=(int)(mTextPaint.getTextSize()*2+0.5) -(2*(int)(mTextPaint.getTextSize()*2+0.5)-mHeight)/(maxNum-minNum)*maxNum;
 

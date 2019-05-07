@@ -3,6 +3,8 @@ package com.liyinan.myweather.activity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.liyinan.myweather.util.HttpUtil;
 import com.liyinan.myweather.util.Utility;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class AreaActivity extends AppCompatActivity {
     private List<AreaBasic> mSearchResultList=new ArrayList<>();
     private SearchAdapter mSearchAdapter;
     private RecyclerView mRecyclerView;
-
+    private SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +64,45 @@ public class AreaActivity extends AppCompatActivity {
         mSearchAdapter=new SearchAdapter(this,mSearchResultList);
         mRecyclerView.setAdapter(mSearchAdapter);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Method method = mSearchView.getClass().getDeclaredMethod("onCloseClicked");
+                    method.setAccessible(true);
+                    method.invoke(mSearchView);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                mRecyclerView.setVisibility(View.GONE);
+                areaListContainer.setVisibility(View.VISIBLE);
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_setting:
+                        Intent intent=new Intent(AreaActivity.this,SettingActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_area,menu);
-
         MenuItem searchItem=menu.findItem(R.id.menu_area_search);
-        final SearchView searchView=(SearchView) searchItem.getActionView();
-        searchView.setQueryHint(getResources().getString(R.string.search_area_hint));
-        searchView.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView=(SearchView) searchItem.getActionView();
+        mSearchView.setQueryHint(getResources().getString(R.string.search_area_hint));
+        mSearchView.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -81,6 +112,7 @@ public class AreaActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 areaListContainer.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
                 requestArea(s);
                 return true;
             }

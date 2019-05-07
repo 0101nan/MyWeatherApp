@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:title="基础设置">
+        <Preference
+            app:key="area_list"
+            app:title="城市列表"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="更新设置">
+        <SwitchPreferenceCompat
+            app:key="auto_update"
+            app:title="自动更新"
+            app:defaultValue="true"/>
+        <ListPreference
+            app:title="自动更新间隔"
+            app:summary="默认更新时间2小时"
+            app:key="update_gap"
+            app:dependency="auto_update"
+            app:defaultValue="2"
+            app:entries="@array/update_gap_title"
+            app:entryValues="@array/update_gap_data"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="关于">
+        <Preference
+            app:title="当前版本"
+            app:key="version"
+            app:summary="1.0"/>
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

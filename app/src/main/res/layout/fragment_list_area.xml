@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
-        android:text="拖拽改变顺序，横划删除"/>
+        android:text="长按并拖拽改变顺序，横划删除"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/area_recycler_view"
         android:orientation="vertical"

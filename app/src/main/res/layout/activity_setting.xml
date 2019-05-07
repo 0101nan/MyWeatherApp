@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -11,22 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/area_activity_toolbar"
+            android:id="@+id/setting_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/ic_back"
-            app:popupTheme="@style/Theme.AppCompat.Light"
-            app:title="城市列表"/>
+            app:title="设置"/>
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_recyclerview"
+    <FrameLayout
+        android:id="@+id/setting_container"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <FrameLayout
-        android:id="@+id/area_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

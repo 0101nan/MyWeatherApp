@@ -194,7 +194,7 @@ public class WeatherPerHourView extends View {
 
     private void init() {
         mPaint = new Paint();
-        mPaint.setColor(getResources().getColor(R.color.colorPrimary));
+        mPaint.setColor(getResources().getColor(R.color.orange));
         mPaint.setAntiAlias(true);
         mPaint.setStrokeWidth(5);
         mPaint.setStrokeCap(Paint.Cap.ROUND);

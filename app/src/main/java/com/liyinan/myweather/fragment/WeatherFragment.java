@@ -12,6 +12,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +87,7 @@ public class WeatherFragment extends Fragment {
     private boolean isRefreshed=false;
 
     private AQI mAQI;
+    private boolean autoUpdate;
 
     //由启动处创建附带地址的fragment
     public static WeatherFragment newInstance(String areaId){
@@ -142,6 +145,7 @@ public class WeatherFragment extends Fragment {
         SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
         String weatherString=preferences.getString("area_weather"+mWeatherId,null);
         String aqiString=preferences.getString("area_aqi"+mWeatherId,null);
+        autoUpdate=preferences.getBoolean("auto_update",false);
         lastWeatherUpdateTime=preferences.getString(LAST_WEATHER_UPDATE_TIME+mWeatherId,null);
         lastAqiUpdateTime=preferences.getString(LAST_AQI_UPDATE_TIME+mWeatherId,null);
         if(lastWeatherUpdateTime==null){
@@ -191,7 +195,9 @@ public class WeatherFragment extends Fragment {
     //获取天气信息
     public void requestWeather(String weatherId) {
         //启动服务
-        WeatherPagerActivity.startService(getContext());
+        if(autoUpdate!=false) {
+            WeatherPagerActivity.startService(getContext());
+        }
 
         //设置api地址
         String weatherUrl="https://api.heweather.net/s6/weather?location="+weatherId+"&key=4477c8824b5f44da84a872578614bdc2";

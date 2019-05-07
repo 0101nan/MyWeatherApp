@@ -19,11 +19,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.fragment.WeatherFragment;
@@ -138,7 +140,6 @@ public class WeatherPagerActivity extends AppCompatActivity {
                 });
 
         mIndicator.setViewPager(mViewPager);
-
     }
 
     public static Intent newIntent(Context packageContext, String areaId){
@@ -148,15 +149,20 @@ public class WeatherPagerActivity extends AppCompatActivity {
     }
 
     public static void startService(Context context){
-        Log.d(TAG, "startService: jobstart???????????????????????????");
+        SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(context);
+        String gap=sharedPreferences.getString("update_gap",null);
+        int updateGap=1;
+        if (gap!=null){
+            updateGap=Integer.parseInt(gap);
+        }
         if(mJobScheduler!=null){
             mJobScheduler.cancel(JOB_ID);
         }
         mJobScheduler=(JobScheduler)context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         JobInfo.Builder builder=new JobInfo.Builder(JOB_ID,new ComponentName(context,UpdateJobService.class));
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
-        builder.setMinimumLatency(1000*60*60);
-        builder.setOverrideDeadline(1000*60*90);
+        builder.setMinimumLatency(1000*60*60*updateGap);
+        builder.setOverrideDeadline(1000*60*90*updateGap);
         mJobScheduler.schedule(builder.build());
     }
 

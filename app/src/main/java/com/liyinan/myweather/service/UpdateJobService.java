@@ -3,7 +3,6 @@ package com.liyinan.myweather.service;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -23,12 +22,10 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static android.support.constraint.Constraints.TAG;
 
 public class UpdateJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
-        Log.d(TAG, "onStartJob: 服务运行》》》》》》》》》》》》》");
         Context context=this;
         Handler handler=new Handler();
         handler.postDelayed(new Runnable() {
@@ -58,7 +55,6 @@ public class UpdateJobService extends JobService {
     private void updateWeather(){
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         String jsonAreaList=prefs.getString("areaList",null);
-        Log.d(TAG, "updateWeather: "+jsonAreaList);
         if(jsonAreaList!=null){
             List<Area1> mArea1List= Utility.handleAreaList(jsonAreaList);
             for (Area1 area1:mArea1List){
@@ -77,7 +73,6 @@ public class UpdateJobService extends JobService {
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(UpdateJobService.this).edit();
                             editor.putString("area_weather"+area1.getAreaCode(),responseText);
                             editor.apply();
-                            Log.d(TAG, "onResponse: 更新天气"+area1.getAreaName());
                         }
                     }
                 });

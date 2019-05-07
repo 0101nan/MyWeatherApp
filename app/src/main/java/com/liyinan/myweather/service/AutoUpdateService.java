@@ -10,7 +10,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.liyinan.myweather.db.Area;
 import com.liyinan.myweather.gson.AQI;
 import com.liyinan.myweather.gson.Area1;
 import com.liyinan.myweather.gson.Weather;
@@ -24,7 +23,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static android.support.constraint.Constraints.TAG;
 
 public class AutoUpdateService extends Service {
     @Override
@@ -35,7 +33,6 @@ public class AutoUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateWeather();
-        Log.d(TAG, "onStartCommand: 运行后台服务一次》》》》》》》》》》》》》》");
         AlarmManager manager=(AlarmManager)getSystemService(ALARM_SERVICE);
         int anHour=60*60*1000;
         long triggerAtTime= SystemClock.elapsedRealtime()+anHour;
@@ -49,7 +46,6 @@ public class AutoUpdateService extends Service {
     private void updateWeather(){
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         String jsonAreaList=prefs.getString("areaList",null);
-        Log.d(TAG, "updateWeather: "+jsonAreaList);
         if(jsonAreaList!=null){
             List<Area1> mArea1List= Utility.handleAreaList(jsonAreaList);
             for (Area1 area1:mArea1List){
@@ -68,7 +64,6 @@ public class AutoUpdateService extends Service {
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
                             editor.putString("area_weather"+area1.getAreaCode(),responseText);
                             editor.apply();
-                            Log.d(TAG, "onResponse: 更新天气"+area1.getAreaName());
                         }
                     }
                 });

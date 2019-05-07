@@ -283,9 +283,9 @@ public class WeatherFragment extends Fragment {
             mlows[i]=mLows.get(i);
         }
 
-        LayoutAnimationController controller= AnimationUtils.loadLayoutAnimation(getContext(),R.anim.layout_animation_slide_right);
+        //LayoutAnimationController controller= AnimationUtils.loadLayoutAnimation(getContext(),R.anim.layout_animation_slide_right);
         mDailyForcastAdapter=new DiagramAdapter(mheights,mlows,1,weather,getFragmentManager());
-        mDailyForcastRecyclerView.setLayoutAnimation(controller);
+        //mDailyForcastRecyclerView.setLayoutAnimation(controller);
         mDailyForcastRecyclerView.setAdapter(mDailyForcastAdapter);
         LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         mDailyForcastRecyclerView.setLayoutManager(manager);

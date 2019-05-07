@@ -101,7 +101,7 @@ public class WeatherPerHourView extends View {
                 mPath.moveTo(mWidth/2,mCaculatedHeightY);
                 mPath.lineTo(mWidth,(mCaculatedHeightY+mCaculatedNextHeightY)/2);
                 canvas.drawPath(mPath,mPaint);
-
+                /*
                 mFillPath.reset();
                 mFillPath.addPath(mPath);
                 mFillPath.lineTo(mWidth,mHeight);
@@ -112,6 +112,7 @@ public class WeatherPerHourView extends View {
                 //mPaint.setColor(getResources().getColor(R.color.colorPrimary));
                 mPaint.setStyle(Paint.Style.FILL);
                 canvas.drawPath(mFillPath,mPaint);
+                */
                 break;
             case sMIDITEM:
                 mPath.moveTo(0,(mCaculatedPreHeightY+mCaculatedHeightY)/2);
@@ -119,7 +120,7 @@ public class WeatherPerHourView extends View {
                 mPath.moveTo(mWidth/2,mCaculatedHeightY);
                 mPath.lineTo(mWidth,(mCaculatedHeightY+mCaculatedNextHeightY)/2);
                 canvas.drawPath(mPath,mPaint);
-
+                /*
                 mFillPath.reset();
                 mFillPath.addPath(mPath);
                 mFillPath.lineTo(mWidth,mHeight);
@@ -131,11 +132,13 @@ public class WeatherPerHourView extends View {
                 //mPaint.setColor(getResources().getColor(R.color.colorPrimary));
                 mPaint.setStyle(Paint.Style.FILL);
                 canvas.drawPath(mFillPath,mPaint);
+                */
                 break;
             case sLASTITEM:
                 mPath.moveTo(0,(mCaculatedPreHeightY+mCaculatedHeightY)/2);
                 mPath.lineTo(mWidth/2,mCaculatedHeightY);
                 canvas.drawPath(mPath,mPaint);
+                /*
                 mFillPath.reset();
                 mFillPath.addPath(mPath);
                 mFillPath.lineTo(mWidth/2,mHeight);
@@ -146,6 +149,7 @@ public class WeatherPerHourView extends View {
                 //mPaint.setColor(getResources().getColor(R.color.colorPrimary));
                 mPaint.setStyle(Paint.Style.FILL);
                 canvas.drawPath(mFillPath,mPaint);
+                */
                 break;
             default:break;
         }

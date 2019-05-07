@@ -82,7 +82,6 @@ public class WeatherPerHourAdapter extends RecyclerView.Adapter<WeatherPerHourAd
         switch(position) {
             case 0:
                 holder.mWeatherPerHourView.draws(mHeight.get(position),mHeight.get(nextPosition),0,mMax,mMin);
-                //holder.itemView.setBackgroundResource(R.drawable.drawableBackground);
                 break;
             case 23:
                 holder.mWeatherPerHourView.draws(mHeight.get(prePosition),mHeight.get(position), 2, true,mMax,mMin);

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.activity.WeatherPagerActivity;
-import com.liyinan.myweather.gson.Area1;
+import com.liyinan.myweather.gson.Area;
 import com.liyinan.myweather.gson.AreaBasic;
 import com.liyinan.myweather.util.Utility;
 
@@ -51,26 +51,29 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 //读取城市列表，若为空则需要新建列表
                 SharedPreferences pref=PreferenceManager.getDefaultSharedPreferences(v.getContext());
                 String jsonAreaList=pref.getString("areaList",null);
-                List<Area1> area1List= Utility.handleAreaList(jsonAreaList);
-                if(area1List==null){
-                    area1List=new ArrayList<>();
+                List<Area> areaList = Utility.handleAreaList(jsonAreaList);
+                if(areaList ==null){
+                    areaList =new ArrayList<>();
                 }
                 //点击添加城市到数据库
                 int position=holder.getAdapterPosition();
                 AreaBasic areaBasic=mAreaList.get(position);
-                Area1 area1=new Area1();
-                area1.setAreaName(areaBasic.location);
-                area1.setAreaCode(areaBasic.cid);
-                area1List.add(area1);
-
-                //储存
-                Gson gson=new Gson();
-                SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(v.getContext()).edit();
-                editor.putString("areaList",gson.toJson(area1List));
-                editor.apply();
-
-                Intent intent= WeatherPagerActivity.newIntent(v.getContext(),areaBasic.cid);
-                v.getContext().startActivity(intent);
+                Area area =new Area();
+                area.setAreaName(areaBasic.location);
+                area.setAreaCode(areaBasic.cid);
+                if (isInAreaList(areaList, area)){
+                    Intent intent= WeatherPagerActivity.newIntent(v.getContext(),areaBasic.cid);
+                    v.getContext().startActivity(intent);
+                }else{
+                    areaList.add(area);
+                    //储存
+                    Gson gson=new Gson();
+                    SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(v.getContext()).edit();
+                    editor.putString("areaList",gson.toJson(areaList));
+                    editor.apply();
+                    Intent intent= WeatherPagerActivity.newIntent(v.getContext(),areaBasic.cid);
+                    v.getContext().startActivity(intent);
+                }
             }
         });
         return holder;
@@ -85,5 +88,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return mAreaList.size();
+    }
+
+    private boolean isInAreaList(List<Area> checkList, Area checkArea){
+        for(Area area :checkList){
+            if (area.getAreaCode().equals(checkArea.getAreaCode())){
+                return true;
+            }
+        }
+        return false;
     }
 }

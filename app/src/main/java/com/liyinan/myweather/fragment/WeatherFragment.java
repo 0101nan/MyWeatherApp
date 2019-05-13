@@ -251,11 +251,13 @@ public class WeatherFragment extends Fragment {
         String cond=weather.now.cond_txt;
 
         //设置头图并保存图片地址
-        String titleImg=Utility.getTitleImg(weather);
+        SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
+        String weatherImg=preferences.getString("area_titleImg"+weather.basic.cid,null);
+        String titleImg=Utility.getTitleImg(weatherImg,weather);
         int resId = getContext().getResources().getIdentifier(titleImg, "drawable", getContext().getPackageName());
         Glide.with(this).load(resId).into(titleImageView);
         SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-        editor.putInt("area_titleImg"+weather.basic.cid,resId);
+        editor.putString("area_titleImg"+weather.basic.cid,titleImg);
         editor.apply();
 
         nowCityName.setText(weather.basic.location);

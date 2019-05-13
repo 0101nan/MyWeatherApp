@@ -1,9 +1,8 @@
 package com.liyinan.myweather.util;
 
 import com.google.gson.Gson;
-import com.liyinan.myweather.db.Area;
 import com.liyinan.myweather.gson.AQI;
-import com.liyinan.myweather.gson.Area1;
+import com.liyinan.myweather.gson.Area;
 import com.liyinan.myweather.gson.Location;
 import com.liyinan.myweather.gson.Weather;
 
@@ -55,16 +54,16 @@ public class Utility {
         return null;
     }
 
-    public static List<Area1> handleAreaList(String jsonAreaList){
-        List<Area1> mAreaList=new ArrayList<>();
+    public static List<Area> handleAreaList(String jsonAreaList){
+        List<Area> mAreaList=new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(jsonAreaList);
             for(int i=0;i<jsonArray.length();i++) {
                 JSONObject jsonObject=jsonArray.getJSONObject(i);
-                Area1 area1 = new Area1();
-                area1.setAreaName(jsonObject.getString("mAreaName"));
-                area1.setAreaCode(jsonObject.getString("mAreaCode"));
-                mAreaList.add(area1);
+                Area area = new Area();
+                area.setAreaName(jsonObject.getString("mAreaName"));
+                area.setAreaCode(jsonObject.getString("mAreaCode"));
+                mAreaList.add(area);
             }
             return mAreaList;
         }catch (Exception e){
@@ -73,7 +72,7 @@ public class Utility {
         return null;
     }
 
-    public static String getTitleImg(Weather weather){
+    public static String getTitleImg(String lastImg,Weather weather){
         List<String> titleImgListUsual=new ArrayList<>(Arrays.asList("title_img_1_0", "title_img_1_1", "title_img_1_2",
                 "title_img_1_3","title_img_1_4","title_img_1_5"));
         List<String> titleImgListSummer=new ArrayList<>(Arrays.asList("title_img_2_0", "title_img_2_1", "title_img_2_2"));
@@ -113,7 +112,15 @@ public class Utility {
         }
         Random random=new Random();
         int position=random.nextInt(baseList.size());
-        return baseList.get(position);
+        if (lastImg==null){
+            return baseList.get(position);
+        }
+        if(baseList.get(position).split("_")[2].equals(lastImg.split("_")[2])){
+            return lastImg;
+        }else{
+            return baseList.get(position);
+        }
+
     }
 
     public static String weatherImgTitle(String cond_id,boolean isDay) {

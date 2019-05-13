@@ -1,6 +1,6 @@
 package com.liyinan.myweather.gson;
 
-public class Area1 {
+public class Area {
     private String mAreaName;
     private String mAreaCode;
     private String titleImg;

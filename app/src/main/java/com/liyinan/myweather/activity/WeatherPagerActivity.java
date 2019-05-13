@@ -19,17 +19,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
+
 import android.view.View;
-import android.widget.Toast;
 
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.fragment.WeatherFragment;
-import com.liyinan.myweather.gson.Area1;
+import com.liyinan.myweather.gson.Area;
 import com.liyinan.myweather.service.UpdateJobService;
 import com.liyinan.myweather.util.ActivityCollector;
 import com.liyinan.myweather.util.Utility;
@@ -46,7 +44,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
     private static int JOB_ID=0;
 
     private ViewPager mViewPager;
-    private List<Area1> mAreas=new ArrayList<>();
+    private List<Area> mAreas=new ArrayList<>();
     private CoordinatorLayout mCoordinatorLayout;
     private FloatingActionButton floatingActionButton;
     private CircleIndicator mIndicator;
@@ -97,7 +95,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int i) {
-                Area1 area=mAreas.get(i);
+                Area area=mAreas.get(i);
                 return WeatherFragment.newInstance(area.getAreaCode());
             }
             @Override

@@ -8,10 +8,9 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.liyinan.myweather.gson.AQI;
-import com.liyinan.myweather.gson.Area1;
+import com.liyinan.myweather.gson.Area;
 import com.liyinan.myweather.gson.Weather;
 import com.liyinan.myweather.util.HttpUtil;
 import com.liyinan.myweather.util.Utility;
@@ -47,9 +46,9 @@ public class AutoUpdateService extends Service {
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         String jsonAreaList=prefs.getString("areaList",null);
         if(jsonAreaList!=null){
-            List<Area1> mArea1List= Utility.handleAreaList(jsonAreaList);
-            for (Area1 area1:mArea1List){
-                String weatherUrl="https://api.heweather.net/s6/weather?location="+area1.getAreaCode()+"&key=4477c8824b5f44da84a872578614bdc2";
+            List<Area> mAreaList = Utility.handleAreaList(jsonAreaList);
+            for (Area area : mAreaList){
+                String weatherUrl="https://api.heweather.net/s6/weather?location="+ area.getAreaCode()+"&key=4477c8824b5f44da84a872578614bdc2";
                 HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -62,12 +61,12 @@ public class AutoUpdateService extends Service {
                         Weather weather=Utility.handleWeatherResponse(responseText);
                         if(weather!=null&&"ok".equals(weather.status)){
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
-                            editor.putString("area_weather"+area1.getAreaCode(),responseText);
+                            editor.putString("area_weather"+ area.getAreaCode(),responseText);
                             editor.apply();
                         }
                     }
                 });
-                String aqiUrl="https://api.heweather.net/s6/air?location="+area1.getAreaCode()+"&key=4477c8824b5f44da84a872578614bdc2";
+                String aqiUrl="https://api.heweather.net/s6/air?location="+ area.getAreaCode()+"&key=4477c8824b5f44da84a872578614bdc2";
                 HttpUtil.sendOkHttpRequest(aqiUrl, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -80,7 +79,7 @@ public class AutoUpdateService extends Service {
                         AQI aqi=Utility.handleAQIResponse(responseText);
                         if(aqi!=null&&aqi.status.equals("ok")){
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
-                            editor.putString("area_aqi"+area1.getAreaCode(),responseText);
+                            editor.putString("area_aqi"+ area.getAreaCode(),responseText);
                             editor.apply();
                         }
                     }

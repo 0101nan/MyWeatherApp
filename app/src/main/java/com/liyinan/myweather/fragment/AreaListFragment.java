@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.adapter.AreaAdapter;
-import com.liyinan.myweather.gson.Area1;
+import com.liyinan.myweather.gson.Area;
 import com.liyinan.myweather.util.Utility;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class AreaListFragment extends Fragment {
     private AreaAdapter mAreaAdapter;
     private RecyclerView mRecyclerView;
 
-    private List<Area1> mArea1List=new ArrayList<>();
+    private List<Area> mAreaList =new ArrayList<>();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +41,10 @@ public class AreaListFragment extends Fragment {
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         String jsonAreaList=prefs.getString("areaList",null);
         if(jsonAreaList!=null){
-            mArea1List= Utility.handleAreaList(jsonAreaList);
+            mAreaList = Utility.handleAreaList(jsonAreaList);
         }
         //绑定adapter
-        mAreaAdapter=new AreaAdapter(mArea1List);
+        mAreaAdapter=new AreaAdapter(mAreaList);
         mRecyclerView.setAdapter(mAreaAdapter);
 
         //设置横划和拖动

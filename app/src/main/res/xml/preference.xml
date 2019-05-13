@@ -30,6 +30,9 @@
             app:title="当前版本"
             app:key="version"
             app:summary="1.0"/>
+        <Preference
+            app:title="Github"
+            app:key="github"
+            app:summary="点击打开Github页面"/>
     </PreferenceCategory>
-
 </androidx.preference.PreferenceScreen>

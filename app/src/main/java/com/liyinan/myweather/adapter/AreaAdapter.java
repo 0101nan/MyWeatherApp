@@ -15,14 +15,16 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.activity.WeatherPagerActivity;
-import com.liyinan.myweather.gson.Area1;
+import com.liyinan.myweather.gson.Area;
 
 import java.util.Collections;
 import java.util.List;
 
+import static org.litepal.LitePalApplication.getContext;
+
 public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
-    private List<Area1>  mAreaList;
-    private Area1 mArea;
+    private List<Area>  mAreaList;
+    private Area mArea;
     private SharedPreferences.Editor editor;
 
 
@@ -39,7 +41,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
 
     }
 
-    public AreaAdapter(List<Area1> areaList){
+    public AreaAdapter(List<Area> areaList){
         mAreaList=areaList;
     }
 
@@ -67,11 +69,12 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
 
         //从内存读取对应图片地址并显示，若为空则显示默认
         SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(holder.areaView.getContext());
-        int resID=preferences.getInt("area_titleImg"+mArea.getAreaCode(),0);
-        if(resID==0) {
+        String weatherImg=preferences.getString("area_titleImg"+mArea.getAreaCode(),null);
+        int resId = getContext().getResources().getIdentifier(weatherImg, "drawable", getContext().getPackageName());
+        if(resId==0) {
             Glide.with(holder.areaView.getContext()).load(R.drawable.title_img_1_0).into(holder.areaTitleImg);
         }else{
-            Glide.with(holder.areaView.getContext()).load(resID).into(holder.areaTitleImg);
+            Glide.with(holder.areaView.getContext()).load(resId).into(holder.areaTitleImg);
         }
 
     }

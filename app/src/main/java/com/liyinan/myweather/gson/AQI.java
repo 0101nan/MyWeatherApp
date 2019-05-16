@@ -13,8 +13,4 @@ public class AQI implements Serializable {
     public AirNow airNow;
     @SerializedName("air_now_station")
     public List<AirStation> airStationList;
-    /*
-    @SerializedName("air_forecast")
-    public List<AirForecast> airForecastList;
-    */
 }

@@ -96,7 +96,7 @@ public class WeatherPagerActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int i) {
                 Area area=mAreas.get(i);
-                return WeatherFragment.newInstance(area.getAreaCode());
+                return WeatherFragment.newInstance(area);
             }
             @Override
             public int getCount() {

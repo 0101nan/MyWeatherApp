@@ -61,6 +61,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 Area area =new Area();
                 area.setAreaName(areaBasic.location);
                 area.setAreaCode(areaBasic.cid);
+                area.setLonLat((areaBasic.lon+','+areaBasic.lat));
                 if (isInAreaList(areaList, area)){
                     Intent intent= WeatherPagerActivity.newIntent(v.getContext(),areaBasic.cid);
                     v.getContext().startActivity(intent);

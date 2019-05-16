@@ -57,6 +57,7 @@
                         android:layout_marginTop="55dp">
 
                         <include layout="@layout/weather_title"/>
+                        <include layout="@layout/weather_pcpn"/>
                         <include layout="@layout/weather_per_day"/>
                         <include layout="@layout/weather_per_hour"/>
                         <include layout="@layout/weather_now_aqi"/>

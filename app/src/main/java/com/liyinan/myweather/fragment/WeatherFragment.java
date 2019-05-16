@@ -18,12 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.liyinan.myweather.activity.WeatherPagerActivity;
+import com.liyinan.myweather.adapter.WeatherPcpnAdapter;
 import com.liyinan.myweather.adapter.WeatherPerHourAdapter;
+import com.liyinan.myweather.gson.Area;
+import com.liyinan.myweather.gson.Pcpn;
+import com.liyinan.myweather.gson.Pcpn5m;
 import com.liyinan.myweather.view.AQIView;
 import com.liyinan.myweather.R;
 import com.liyinan.myweather.gson.AQI;
@@ -54,10 +59,12 @@ public class WeatherFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private String mWeatherId;
-
+    private Area mArea;
+    private String mLotLat;
     private CardView mWeatherNowCardView;
     private CardView mWeatherNowAqiCardView;
     private CardView mWeatherPerdayCardView;
+    private CardView mWeatherPcpnCardView;
 
     private TextView nowCondText;
     private TextView nowTmp;
@@ -70,6 +77,7 @@ public class WeatherFragment extends Fragment {
     private TextView aqiSO2Text;
     private TextView aqiCOTExt;
     private TextView aqiO3Text;
+    private TextView pcpnText;
 
     private AQIView mAQIView;
 
@@ -87,12 +95,17 @@ public class WeatherFragment extends Fragment {
     private boolean isRefreshed=false;
 
     private AQI mAQI;
+    private Pcpn mPcpn;
     private boolean autoUpdate;
 
+    private List<Float> mPcpns;
+    private WeatherPcpnAdapter mWeatherPcpnAdapter;
+    private RecyclerView mPcpnRecyclerView;
+
     //由启动处创建附带地址的fragment
-    public static WeatherFragment newInstance(String areaId){
+    public static WeatherFragment newInstance(Area area){
         Bundle args=new Bundle();
-        args.putString(ARG_AREA_ID,areaId);
+        args.putSerializable(ARG_AREA_ID,area);
         WeatherFragment weatherFragment=new WeatherFragment();
         weatherFragment.setArguments(args);
         return weatherFragment;
@@ -117,16 +130,18 @@ public class WeatherFragment extends Fragment {
         aqiCOTExt=view.findViewById(R.id.aqi_co_text);
         aqiO3Text=view.findViewById(R.id.aqi_o3_text);
         aqiSO2Text=view.findViewById(R.id.aqi_so2_text);
+        pcpnText=view.findViewById(R.id.weather_pcpn_text);
 
         mWeatherNowCardView=view.findViewById(R.id.weather_now_cardview);
         mWeatherNowAqiCardView=view.findViewById(R.id.weather_now_aqi_cardview);
         mWeatherPerdayCardView=view.findViewById(R.id.weather_perday_cardview);
+        mWeatherPcpnCardView=view.findViewById(R.id.weather_pcpn_cardview);
 
         mAQIView=view.findViewById(R.id.aqi_view);
 
         mDailyForcastRecyclerView=view.findViewById(R.id.weather_perday_recyclerview);
         mHourilForcastRecyclerView=view.findViewById(R.id.weather_perhour_recyclerview);
-
+        mPcpnRecyclerView=view.findViewById(R.id.weather_pcpn_recyclerview);
 
         mWeatherNowAqiCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,10 +156,14 @@ public class WeatherFragment extends Fragment {
 
 
         //查询天气
-        mWeatherId=getArguments().getString(ARG_AREA_ID);
+        mArea=(Area) getArguments().getSerializable(ARG_AREA_ID);
+        mWeatherId=mArea.getAreaCode();
+        mLotLat=mArea.getLonLat();
+        Log.d(TAG, "onCreateView: "+mLotLat);
         SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
         String weatherString=preferences.getString("area_weather"+mWeatherId,null);
         String aqiString=preferences.getString("area_aqi"+mWeatherId,null);
+        String pcpnString=preferences.getString("area_pcpn"+mWeatherId,null);
         autoUpdate=preferences.getBoolean("auto_update",false);
         lastWeatherUpdateTime=preferences.getString(LAST_WEATHER_UPDATE_TIME+mWeatherId,null);
         lastAqiUpdateTime=preferences.getString(LAST_AQI_UPDATE_TIME+mWeatherId,null);
@@ -158,7 +177,6 @@ public class WeatherFragment extends Fragment {
             Weather weather= Utility.handleWeatherResponse(weatherString);
             showWeatherInfo(weather);
         }else{
-
             requestWeather(mWeatherId);
         }
         if(aqiString!=null){
@@ -166,8 +184,14 @@ public class WeatherFragment extends Fragment {
             mAQI=aqi;
             showAQIInfo(aqi);
         }else{
-
             requestAQI(mWeatherId);
+        }
+        if(pcpnString!=null){
+            Pcpn pcpn= Utility.handlePcpnResponse(pcpnString);
+            mPcpn=pcpn;
+            showPcpnInfo(pcpn);
+        }else{
+            requestPcpn(mLotLat);
         }
 
 
@@ -179,6 +203,7 @@ public class WeatherFragment extends Fragment {
             public void onRefresh() {
                 requestWeather(mWeatherId);
                 requestAQI(mWeatherId);
+                requestPcpn(mLotLat);
                 if(isRefreshed){
                 Snackbar.make(view,"天气信息已更新",Snackbar.LENGTH_SHORT)
                         .show();
@@ -347,7 +372,6 @@ public class WeatherFragment extends Fragment {
     //显示空气质量
     private void showAQIInfo(AQI aqi) {
         mAQIView.setProgress(parseInt(aqi.airNow.aqi));
-
         aqiMainText.setText(aqi.airNow.main);
         aqiPM10Text.setText(aqi.airNow.pm10);
         aqiPM25Text.setText(aqi.airNow.pm25);
@@ -355,7 +379,67 @@ public class WeatherFragment extends Fragment {
         aqiCOTExt.setText(aqi.airNow.co);
         aqiO3Text.setText(aqi.airNow.o3);
         aqiSO2Text.setText(aqi.airNow.so2);
-
     }
 
+    //获取降雨量
+    public void requestPcpn(final String lonlat){
+        String pcpnUrl="https://api.heweather.net/s6/weather/grid-minute?location="+lonlat+"&key=4477c8824b5f44da84a872578614bdc2";
+        HttpUtil.sendOkHttpRequest(pcpnUrl, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "获取降水量质量失败", Toast.LENGTH_SHORT).show();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String responseText=response.body().string();
+                final Pcpn pcpn=Utility.handlePcpnResponse(responseText);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(pcpn!=null && pcpn.status.equals("ok")){
+                                SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+                                editor.putString("area_pcpn"+mWeatherId,responseText);
+                                editor.apply();
+                                mPcpn=pcpn;
+                                showPcpnInfo(pcpn);
+                        }else{
+                            Toast.makeText(getContext(), "获取降水量信息失败 ", Toast.LENGTH_SHORT).show();
+                        }
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        });
+    }
+    //显示降水量
+    private void showPcpnInfo(Pcpn pcpn) {
+
+        float mpcpnMax=0;
+        mPcpns=new ArrayList<>();
+        for (Pcpn5m pcpn5m:pcpn.Pcpn5mList){
+            mPcpns.add(Float.parseFloat(pcpn5m.pcpn));
+            if (Float.parseFloat(pcpn5m.pcpn)>mpcpnMax){
+                mpcpnMax=Float.parseFloat(pcpn5m.pcpn);
+            }
+        }
+        if (mpcpnMax>0){
+            mWeatherPcpnCardView.setVisibility(View.VISIBLE);
+            pcpnText.setText(pcpn.GridMinuteForecast.txt);
+            mWeatherPcpnAdapter=new WeatherPcpnAdapter(mPcpns,pcpn);
+            mPcpnRecyclerView.setAdapter(mWeatherPcpnAdapter);
+            LinearLayoutManager linearLayoutManager1=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+            mPcpnRecyclerView.setLayoutManager(linearLayoutManager1);
+        }else{
+            mWeatherPcpnCardView.setVisibility(View.GONE);
+        }
+
+    }
 }

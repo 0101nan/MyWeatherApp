@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.liyinan.myweather.gson.AQI;
 import com.liyinan.myweather.gson.Area;
 import com.liyinan.myweather.gson.Location;
+import com.liyinan.myweather.gson.Pcpn;
 import com.liyinan.myweather.gson.Weather;
 
 import org.json.JSONArray;
@@ -54,6 +55,18 @@ public class Utility {
         return null;
     }
 
+    public static Pcpn handlePcpnResponse(String response){
+        try{
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather6");
+            String PcpnContent=jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(PcpnContent,Pcpn.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static List<Area> handleAreaList(String jsonAreaList){
         List<Area> mAreaList=new ArrayList<>();
         try {
@@ -63,6 +76,7 @@ public class Utility {
                 Area area = new Area();
                 area.setAreaName(jsonObject.getString("mAreaName"));
                 area.setAreaCode(jsonObject.getString("mAreaCode"));
+                area.setLonLat(jsonObject.getString("mLonLat"));
                 mAreaList.add(area);
             }
             return mAreaList;

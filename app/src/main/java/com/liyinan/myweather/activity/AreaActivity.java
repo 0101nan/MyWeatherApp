@@ -232,6 +232,7 @@ public class AreaActivity extends AppCompatActivity {
                             Area area =new Area();
                             area.setAreaName(areaBasic.location);
                             area.setAreaCode(areaBasic.cid);
+                            area.setLonLat(areaBasic.lon+','+areaBasic.lat);
                             mAreaList.add(area);
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(AreaActivity.this).edit();
                             Gson gson=new Gson();
@@ -243,6 +244,7 @@ public class AreaActivity extends AppCompatActivity {
                         Area area =new Area();
                         area.setAreaName(areaBasic.location);
                         area.setAreaCode(areaBasic.cid);
+                        area.setLonLat(areaBasic.lon+','+areaBasic.lat);
                         mAreaList.add(area);
                         SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(AreaActivity.this).edit();
                         Gson gson=new Gson();
